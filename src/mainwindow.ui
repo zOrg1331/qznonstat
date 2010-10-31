@@ -38,7 +38,7 @@
      <x>0</x>
      <y>0</y>
      <width>731</width>
-     <height>21</height>
+     <height>27</height>
     </rect>
    </property>
   </widget>
@@ -84,49 +84,49 @@
         <property name="margin">
          <number>1</number>
         </property>
-        <item row="0" column="0" colspan="2">
+        <item row="1" column="0" colspan="2">
          <widget class="QLabel" name="fileNameLabel">
           <property name="text">
            <string>Файл</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="0" colspan="2">
+        <item row="2" column="0" colspan="2">
          <widget class="QPushButton" name="loadDataButton">
           <property name="text">
            <string>Открыть...</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
+        <item row="3" column="0">
          <widget class="QLabel" name="dataFromLabel">
           <property name="text">
            <string>от:</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="1">
+        <item row="3" column="1">
          <widget class="QLineEdit" name="dataFromEdit">
           <property name="text">
            <string>0</string>
           </property>
          </widget>
         </item>
-        <item row="3" column="0">
+        <item row="4" column="0">
          <widget class="QLabel" name="dataToLabel">
           <property name="text">
            <string>до:</string>
           </property>
          </widget>
         </item>
-        <item row="3" column="1">
+        <item row="4" column="1">
          <widget class="QLineEdit" name="dataToEdit">
           <property name="text">
            <string>10000</string>
           </property>
          </widget>
         </item>
-        <item row="4" column="0" colspan="2">
+        <item row="5" column="0" colspan="2">
          <widget class="QCheckBox" name="dataAllCheck">
           <property name="text">
            <string>весь ряд</string>
@@ -136,52 +136,59 @@
           </property>
          </widget>
         </item>
-        <item row="5" column="0">
+        <item row="6" column="0">
          <widget class="QLabel" name="dataWindowLabel">
           <property name="text">
            <string>окно:</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="1">
+        <item row="6" column="1">
          <widget class="QLineEdit" name="dataWindowEdit">
           <property name="text">
            <string>500</string>
           </property>
          </widget>
         </item>
-        <item row="6" column="0">
+        <item row="7" column="0">
          <widget class="QLabel" name="dataStepLabel">
           <property name="text">
            <string>смещение:</string>
           </property>
          </widget>
         </item>
-        <item row="6" column="1">
+        <item row="7" column="1">
          <widget class="QLineEdit" name="dataStepEdit">
           <property name="text">
            <string>500</string>
           </property>
          </widget>
         </item>
-        <item row="7" column="0" colspan="2">
+        <item row="8" column="0" colspan="2">
          <widget class="QCheckBox" name="dataSecondsCheck">
           <property name="text">
            <string>в секундах</string>
           </property>
          </widget>
         </item>
-        <item row="8" column="0">
+        <item row="9" column="0">
          <widget class="QLabel" name="dataSamplingLabel">
           <property name="text">
            <string>выборка, Гц:</string>
           </property>
          </widget>
         </item>
-        <item row="8" column="1">
+        <item row="9" column="1">
          <widget class="QLineEdit" name="dataSamplingEdit">
           <property name="text">
            <string>250</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0" colspan="2">
+         <widget class="QPushButton" name="addDataButton">
+          <property name="text">
+           <string>Добавить временной ряд</string>
           </property>
          </widget>
         </item>

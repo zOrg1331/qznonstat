@@ -11,8 +11,14 @@ TEMPLATE = app
 
 
 SOURCES += src/main.cpp\
-        src/mainwindow.cpp
+        src/mainwindow.cpp \
+        src/zchart.cpp \
+        src/zframes.cpp \
+    src/datakeeper.cpp
 
-HEADERS  += src/mainwindow.h
+HEADERS  += src/mainwindow.h \
+            src/zchart.h \
+            src/zframes.h \
+    src/datakeeper.h
 
 FORMS    += src/mainwindow.ui
