@@ -12,6 +12,7 @@ class DataKeeper : public QObject
     Q_OBJECT
 public:
     explicit DataKeeper();
+    ~DataKeeper();
 
     void setNum(int n) { num = n; }
     QWidget *getWidget();

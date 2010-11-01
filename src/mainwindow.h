@@ -7,6 +7,8 @@ namespace Ui {
     class MainWindow;
 }
 
+class DataKeeper;
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -18,8 +20,11 @@ public:
 private:
     Ui::MainWindow *ui;
 
+    QList<DataKeeper *> dataKeepers;
+
 private slots:
     void on_addDataButton_clicked();
+    void on_timeSeriesesTabs_tabCloseRequested(int index);
 };
 
 #endif // MAINWINDOW_H

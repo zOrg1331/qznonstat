@@ -23,6 +23,12 @@ DataKeeper::DataKeeper()
     chart->addSeries(graph);
 }
 
+DataKeeper::~DataKeeper()
+{
+    delete graph;
+    delete chart;
+}
+
 QWidget *DataKeeper::getWidget()
 {
     return  qobject_cast<QWidget*>(chart);
