@@ -18,6 +18,8 @@ public:
     ~MainWindow();
 
 private:
+    void refreshDataTabsText();
+
     Ui::MainWindow *ui;
 
     QList<DataKeeper *> dataKeepers;
@@ -25,6 +27,7 @@ private:
 private slots:
     void on_addDataButton_clicked();
     void on_timeSeriesesTabs_tabCloseRequested(int index);
+    void on_loadDataButton_clicked();
 };
 
 #endif // MAINWINDOW_H

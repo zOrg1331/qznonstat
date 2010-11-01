@@ -3,6 +3,8 @@
 
 #include "datakeeper.h"
 
+#include <QFileDialog>
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -33,6 +35,25 @@ void MainWindow::on_timeSeriesesTabs_tabCloseRequested(int index)
 {
     delete dataKeepers[index];
     dataKeepers.removeAt(index);
+    refreshDataTabsText();
+}
+
+void MainWindow::on_loadDataButton_clicked()
+{
+    QString fileName = QFileDialog::getOpenFileName(this,
+                                                    trUtf8("Открыть временной ряд"),
+                                                    "",
+                                                    tr("Временные ряды (*.txt *.dat)"));
+    if (!fileName.isEmpty()) {
+        ui->fileNameLabel->setText(trUtf8("Файл: %1")
+                                   .arg(QFileInfo(fileName).baseName()));
+        dataKeepers[ui->timeSeriesesTabs->currentIndex()]->setDataFileName(fileName);
+        refreshDataTabsText();
+    }
+}
+
+void MainWindow::refreshDataTabsText()
+{
     for (int i = 0; i < dataKeepers.size(); i++) {
         dataKeepers[i]->setNum(i);
         ui->timeSeriesesTabs->setTabText(i,

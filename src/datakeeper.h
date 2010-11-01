@@ -16,7 +16,9 @@ public:
 
     void setNum(int n) { num = n; }
     QWidget *getWidget();
-    QString getDescription() { return trUtf8("ряд: %1").arg(num+1); }
+    QString getDescription();
+    void setDataFileName(const QString fileName);
+    void redrawData();
 
 signals:
 
@@ -27,6 +29,8 @@ private:
     ZSimpleSeries *graph;
 
     int num;
+    QString fileName;
+    QVector<double> data;
 };
 
 #endif // DATAKEEPER_H
