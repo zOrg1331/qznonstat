@@ -7,7 +7,10 @@ namespace Ui {
     class MainWindow;
 }
 
+class QProgressDialog;
+
 class DataKeeper;
+class ArDataAnalysis;
 
 class MainWindow : public QMainWindow
 {
@@ -23,8 +26,11 @@ private:
     void disableDataSettingsWidgets(bool disable);
 
     Ui::MainWindow *ui;
+    QProgressDialog *progress;
 
     QList<DataKeeper *> dataKeepers;
+
+    ArDataAnalysis *arDataAnalysisRoutine;
 
 private slots:
     void on_addDataButton_clicked();
@@ -38,6 +44,7 @@ private slots:
     void on_dataAllCheck_clicked(bool checked);
     void on_dataSecondsCheck_clicked(bool checked);
     void on_dataSamplingEdit_editingFinished();
+    void on_doDataAnalysisButton_clicked();
 };
 
 #endif // MAINWINDOW_H

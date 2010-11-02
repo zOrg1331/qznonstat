@@ -2,16 +2,27 @@
 #include "ui_mainwindow.h"
 
 #include "datakeeper.h"
+#include "ardataanalysis.h"
 
 #include <QFileDialog>
+#include <QProgressDialog>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
     ui->timeSeriesesTabs->removeTab(0);
+
+    progress = new QProgressDialog(trUtf8("Идет расчет..."), "Отмена", 0, 1, this);
+    progress->setWindowModality(Qt::ApplicationModal);
+    progress->setCancelButton(0);
+    progress->setMinimumDuration(1000);
+
+    arDataAnalysisRoutine = new ArDataAnalysis();
+    arDataAnalysisRoutine->setDataKeepers(&dataKeepers);
+    connect(arDataAnalysisRoutine, SIGNAL(progressStep(int)),
+            progress, SLOT(setValue(int)));
 }
 
 MainWindow::~MainWindow()
@@ -158,4 +169,17 @@ void MainWindow::on_dataSecondsCheck_clicked(bool checked)
     if (!dataKeeper) return;
     dataKeeper->setDataUseSeconds(checked);
     dataKeeper->redrawData();
+}
+
+void MainWindow::on_doDataAnalysisButton_clicked()
+{
+    switch (ui->dataAnalysisMethodBox->currentIndex()) {
+    case 0:
+        progress->setMaximum(arDataAnalysisRoutine->getEstimatedTime());
+        progress->setValue(0);
+        arDataAnalysisRoutine->setParams(ui->dataAnalysisParam1Edit->text().toInt(),
+                                         ui->dataAnalysisParam2Edit->text().toInt());
+        arDataAnalysisRoutine->start();
+        break;
+    }
 }

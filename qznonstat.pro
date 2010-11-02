@@ -14,11 +14,13 @@ SOURCES += src/main.cpp\
         src/mainwindow.cpp \
         src/zchart.cpp \
         src/zframes.cpp \
-    src/datakeeper.cpp
+    src/datakeeper.cpp \
+    src/ardataanalysis.cpp
 
 HEADERS  += src/mainwindow.h \
             src/zchart.h \
             src/zframes.h \
-    src/datakeeper.h
+    src/datakeeper.h \
+    src/ardataanalysis.h
 
 FORMS    += src/mainwindow.ui
