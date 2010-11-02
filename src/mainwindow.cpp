@@ -19,6 +19,47 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::fillDataSettingsWidgets(DataKeeper *dataKeeper)
+{
+    if (dataKeeper) {
+        ui->dataFromEdit->setText(QString::number(dataKeeper->getDataFrom()));
+        ui->dataToEdit->setText(QString::number(dataKeeper->getDataTo()));
+        ui->dataWindowEdit->setText(QString::number(dataKeeper->getDataWindow()));
+        ui->dataStepEdit->setText(QString::number(dataKeeper->getDataWindowStep()));
+        ui->dataSamplingEdit->setText(QString::number(dataKeeper->getDataSampling()));
+        if (dataKeeper->getDataUseFullTs()) ui->dataAllCheck->setChecked(true);
+        else ui->dataAllCheck->setChecked(false);
+        if (dataKeeper->getDataUseSeconds()) ui->dataSecondsCheck->setChecked(true);
+        else ui->dataSecondsCheck->setChecked(false);
+        ui->fileNameLabel->setText(trUtf8("Файл: %1")
+                                   .arg(QFileInfo(dataKeeper->getDataFileName()).baseName()));
+    }
+}
+
+void MainWindow::disableDataSettingsWidgets(bool disable) {
+    ui->loadDataButton->setDisabled(disable);
+    ui->dataFromEdit->setDisabled(disable);
+    ui->dataToEdit->setDisabled(disable);
+    ui->dataWindowEdit->setDisabled(disable);
+    ui->dataStepEdit->setDisabled(disable);
+    ui->dataAllCheck->setDisabled(disable);
+    ui->dataSecondsCheck->setDisabled(disable);
+    ui->dataSamplingEdit->setDisabled(disable);
+}
+
+void MainWindow::on_timeSeriesesTabs_currentChanged(int index)
+{
+    if (dataKeepers.size() > 0) {
+        disableDataSettingsWidgets(false);
+
+        DataKeeper *dataKeeper = dataKeepers[index];
+        if (!dataKeeper) return;
+        fillDataSettingsWidgets(dataKeeper);
+    } else {
+        disableDataSettingsWidgets(true);
+    }
+}
+
 void MainWindow::on_addDataButton_clicked()
 {
     DataKeeper *dataKeeper = new DataKeeper();
@@ -29,6 +70,8 @@ void MainWindow::on_addDataButton_clicked()
     ui->timeSeriesesTabs->addTab(dataKeeper->getWidget(),
                                  dataKeeper->getDescription());
     ui->timeSeriesesTabs->setCurrentIndex(ui->timeSeriesesTabs->count()-1);
+
+    fillDataSettingsWidgets(dataKeeper);
 }
 
 void MainWindow::on_timeSeriesesTabs_tabCloseRequested(int index)
@@ -59,4 +102,60 @@ void MainWindow::refreshDataTabsText()
         ui->timeSeriesesTabs->setTabText(i,
                                          dataKeepers.at(i)->getDescription());
     }
+}
+
+void MainWindow::on_dataFromEdit_editingFinished()
+{
+    DataKeeper *dataKeeper = dataKeepers[ui->timeSeriesesTabs->currentIndex()];
+    if (!dataKeeper) return;
+    dataKeeper->setDataFrom(ui->dataFromEdit->text().toInt());
+    dataKeeper->redrawData();
+}
+
+void MainWindow::on_dataToEdit_editingFinished()
+{
+    DataKeeper *dataKeeper = dataKeepers[ui->timeSeriesesTabs->currentIndex()];
+    if (!dataKeeper) return;
+    dataKeeper->setDataTo(ui->dataToEdit->text().toInt());
+    dataKeeper->redrawData();
+}
+
+void MainWindow::on_dataWindowEdit_editingFinished()
+{
+    DataKeeper *dataKeeper = dataKeepers[ui->timeSeriesesTabs->currentIndex()];
+    if (!dataKeeper) return;
+    dataKeeper->setDataWindow(ui->dataWindowEdit->text().toInt());
+    dataKeeper->redrawData();
+}
+
+void MainWindow::on_dataStepEdit_editingFinished()
+{
+    DataKeeper *dataKeeper = dataKeepers[ui->timeSeriesesTabs->currentIndex()];
+    if (!dataKeeper) return;
+    dataKeeper->setDataWindowStep(ui->dataStepEdit->text().toInt());
+    dataKeeper->redrawData();
+}
+
+void MainWindow::on_dataSamplingEdit_editingFinished()
+{
+    DataKeeper *dataKeeper = dataKeepers[ui->timeSeriesesTabs->currentIndex()];
+    if (!dataKeeper) return;
+    dataKeeper->setDataSampling(ui->dataSamplingEdit->text().toInt());
+    dataKeeper->redrawData();
+}
+
+void MainWindow::on_dataAllCheck_clicked(bool checked)
+{
+    DataKeeper *dataKeeper = dataKeepers[ui->timeSeriesesTabs->currentIndex()];
+    if (!dataKeeper) return;
+    dataKeeper->setDataUseFullTs(checked);
+    dataKeeper->redrawData();
+}
+
+void MainWindow::on_dataSecondsCheck_clicked(bool checked)
+{
+    DataKeeper *dataKeeper = dataKeepers[ui->timeSeriesesTabs->currentIndex()];
+    if (!dataKeeper) return;
+    dataKeeper->setDataUseSeconds(checked);
+    dataKeeper->redrawData();
 }

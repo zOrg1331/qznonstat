@@ -8,6 +8,14 @@
 
 DataKeeper::DataKeeper()
 {
+    dataFrom = 0;
+    dataTo = 10000;
+    dataWindow = 500;
+    dataWindowStep = 500;
+    dataUseFullTs = false;
+    dataUseSeconds = false;
+    dataSampling = 250;
+
     chart = new ZChart();
     chart->setBorderType(0);
     chart->setGraphPanelBorderType(0);
@@ -16,8 +24,8 @@ DataKeeper::DataKeeper()
     chart->setFirstText("");
     chart->setSecondText(" ");
     chart->setTitle(trUtf8("временной ряд"));
-    chart->setXRange(0, 10);
-    chart->setYRange(-10, 10);
+    chart->setXRange(dataFrom, dataTo);
+    chart->setYRange(0, 10);
     chart->setAxesName("", "");
     chart->showLegend(false);
     chart->setAutoscale(true);
@@ -73,11 +81,14 @@ void DataKeeper::setDataFileName(const QString name)
 
 void DataKeeper::redrawData()
 {
+    int sampling = 1;
     graph->clear();
+    if (dataUseSeconds) sampling = dataSampling;
     for (int i = 0; i < data.size(); i++) {
-        graph->add(i, data.at(i));
+        graph->add(i/(double)sampling, data.at(i));
     }
     chart->autoscale();
+    if (!dataUseFullTs) chart->setXRange(dataFrom, dataTo);
 }
 
 QString DataKeeper::getDescription()
