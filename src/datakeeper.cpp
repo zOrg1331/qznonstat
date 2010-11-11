@@ -41,6 +41,15 @@ DataKeeper::~DataKeeper()
     delete chart;
 }
 
+void DataKeeper::setDataUseFullTs(const bool useFullTs)
+{
+    dataUseFullTs = useFullTs;
+    if (useFullTs) {
+        dataFrom = 0;
+        dataTo = data.size();
+    }
+}
+
 QWidget *DataKeeper::getWidget()
 {
     return  qobject_cast<QWidget*>(chart);
@@ -76,6 +85,11 @@ void DataKeeper::setDataFileName(const QString name)
 
     file.close();
 
+    if (dataUseFullTs) {
+        dataFrom = 0;
+        dataTo = data.size();
+    }
+
     redrawData();
 }
 
@@ -94,4 +108,17 @@ void DataKeeper::redrawData()
 QString DataKeeper::getDescription()
 {
     return fileName.isEmpty() ? trUtf8("ряд: %1").arg(num+1) : QFileInfo(fileName).baseName();
+}
+
+int DataKeeper::getWindowsCount()
+{
+    return (dataTo-dataFrom)/dataWindowStep - dataWindow/dataWindowStep;
+}
+
+void DataKeeper::getDataInWindow(int windowNum, QVector<double> *dataIn)
+{
+    dataIn->clear();
+    for (int i = 0; i < dataWindow; i++) {
+        dataIn->append(data.at(dataFrom + windowNum*dataWindowStep + i));
+    }
 }

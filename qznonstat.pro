@@ -15,12 +15,17 @@ SOURCES += src/main.cpp\
         src/zchart.cpp \
         src/zframes.cpp \
     src/datakeeper.cpp \
-    src/ardataanalysis.cpp
+    src/ardataanalysis.cpp \
+    src/common_math_tools.cpp
 
 HEADERS  += src/mainwindow.h \
             src/zchart.h \
             src/zframes.h \
     src/datakeeper.h \
-    src/ardataanalysis.h
+    src/ardataanalysis.h \
+    src/common_math_tools.h \
+    src/pcg.hpp \
+    src/cholesky.hpp \
+    src/precond.hpp
 
 FORMS    += src/mainwindow.ui

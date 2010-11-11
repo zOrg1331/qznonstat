@@ -4,6 +4,7 @@
 #include <QThread>
 
 class DataKeeper;
+class CommonMathTools;
 
 class ArDataAnalysis : public QThread
 {
@@ -26,10 +27,14 @@ signals:
 public slots:
 
 private:
+    void calc();
+
     const QList<DataKeeper *> *dataKeepers;
+    CommonMathTools *cmtObj;
     int dimension;
     int order;
 
+    int progress;
 };
 
 #endif // ARDATAANALYSIS_H

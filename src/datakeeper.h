@@ -23,7 +23,7 @@ public:
     void setDataTo(const int to) { dataTo = to; }
     void setDataWindow(const int window) { dataWindow = window; }
     void setDataWindowStep(const int windowStep) { dataWindowStep = windowStep; }
-    void setDataUseFullTs(const bool useFullTs) { dataUseFullTs = useFullTs; }
+    void setDataUseFullTs(const bool useFullTs);
     void setDataUseSeconds(const bool useSeconds) { dataUseSeconds = useSeconds; }
     void setDataSampling(const int sampling) { dataSampling = sampling; }
 
@@ -34,6 +34,10 @@ public:
     bool getDataUseFullTs() { return dataUseFullTs; }
     bool getDataUseSeconds() { return dataUseSeconds; }
     int getDataSampling() { return dataSampling; }
+
+    int getWindowsCount();
+
+    void getDataInWindow(int windowNum, QVector<double> *dataIn);
 
     QWidget *getWidget();
     QString getDescription();
