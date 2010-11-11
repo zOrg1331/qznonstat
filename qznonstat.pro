@@ -17,7 +17,8 @@ SOURCES += src/main.cpp\
     src/datakeeper.cpp \
     src/ardataanalysis.cpp \
     src/common_math_tools.cpp \
-    src/distanceelement.cpp
+    src/distanceelement.cpp \
+    src/armodeltune.cpp
 
 HEADERS  += src/mainwindow.h \
             src/zchart.h \
@@ -28,6 +29,7 @@ HEADERS  += src/mainwindow.h \
     src/pcg.hpp \
     src/cholesky.hpp \
     src/precond.hpp \
-    src/distanceelement.h
+    src/distanceelement.h \
+    src/armodeltune.h
 
-FORMS    += src/mainwindow.ui
+FORMS    += src/mainwindow.ui src/armodeltune.ui

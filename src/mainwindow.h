@@ -12,6 +12,7 @@ class QProgressDialog;
 class DataKeeper;
 class DistanceElement;
 class ArDataAnalysis;
+class ArModelTune;
 
 class MainWindow : public QMainWindow
 {
@@ -34,6 +35,7 @@ private:
     QVector<DistanceElement> distanceElements;
 
     ArDataAnalysis *arDataAnalysisRoutine;
+    ArModelTune *arModelTune;
 
 private slots:
     void on_addDataButton_clicked();
@@ -48,6 +50,8 @@ private slots:
     void on_dataSecondsCheck_clicked(bool checked);
     void on_dataSamplingEdit_editingFinished();
     void on_doDataAnalysisButton_clicked();
+    void on_dataAnalysisSetupMethodButton_clicked();
+    void enable_dataAnalysisSetupMethodButton();
 };
 
 #endif // MAINWINDOW_H

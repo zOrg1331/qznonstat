@@ -48,7 +48,6 @@ void ArDataAnalysis::calc()
             }
 
             VECTOR_D arCoeffs;
-            arCoeffs.resize(dataKeepers->at(ts)->getWindowsCount());
 
             cmtObj->lls_solve_single_ts(dimension, order, dataV, &arCoeffs);
 

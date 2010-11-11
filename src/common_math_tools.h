@@ -112,6 +112,8 @@ public:
     int calcDeterminant(const MATRIX& A,
                         double & Det);
 
+    void prepearePowers(int dimension, int order, QVector< QVector<int> > *powers);
+
     void lls_solve_single_ts(int dimension, int order,
                              const VECTOR_D &data,
                              VECTOR_D *ar_coeffs);
@@ -121,7 +123,6 @@ public:
 private:
 //    void calcStats();
 //    void normalizeTS();
-    void prepearePowers(int dimension, int order, QVector< QVector<int> > *powers);
 
     double getBasisFuncValue_single_ts(int Pi, int dimension, int Ni,
                                        const QVector< QVector<int> > &powers,

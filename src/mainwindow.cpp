@@ -4,6 +4,7 @@
 #include "datakeeper.h"
 #include "distanceelement.h"
 #include "ardataanalysis.h"
+#include "armodeltune.h"
 
 #include <QFileDialog>
 #include <QProgressDialog>
@@ -23,8 +24,9 @@ MainWindow::MainWindow(QWidget *parent) :
     arDataAnalysisRoutine = new ArDataAnalysis();
     arDataAnalysisRoutine->setDataKeepers(&dataKeepers);
     arDataAnalysisRoutine->setDistanceElements(&distanceElements);
-    connect(arDataAnalysisRoutine, SIGNAL(progressStep(int)),
-            progress, SLOT(setValue(int)));
+
+    arModelTune = new ArModelTune(arDataAnalysisRoutine, this);
+    arModelTune->hide();
 }
 
 MainWindow::~MainWindow()
@@ -178,10 +180,33 @@ void MainWindow::on_doDataAnalysisButton_clicked()
     switch (ui->dataAnalysisMethodBox->currentIndex()) {
     case 0:
         progress->setMaximum(arDataAnalysisRoutine->getEstimatedTime());
-        progress->setValue(0);
+        disconnect(progress);
+        connect(arDataAnalysisRoutine, SIGNAL(progressStep(int)),
+                progress, SLOT(setValue(int)));
+        ui->dataAnalysisSetupMethodButton->setEnabled(false);
+        connect(arDataAnalysisRoutine, SIGNAL(finished()),
+                this, SLOT(enable_dataAnalysisSetupMethodButton()));
         arDataAnalysisRoutine->setParams(ui->dataAnalysisParam1Edit->text().toInt(),
                                          ui->dataAnalysisParam2Edit->text().toInt());
         arDataAnalysisRoutine->start();
+        break;
+    }
+}
+
+void MainWindow::enable_dataAnalysisSetupMethodButton()
+{
+    ui->dataAnalysisSetupMethodButton->setEnabled(true);
+}
+
+void MainWindow::on_dataAnalysisSetupMethodButton_clicked()
+{
+    switch (ui->dataAnalysisMethodBox->currentIndex()) {
+    case 0:
+        disconnect(progress);
+        connect(arModelTune, SIGNAL(progressStep(int)),
+                progress, SLOT(setValue(int)));
+        progress->setMaximum(arModelTune->getEstimatedTime());
+        arModelTune->show();
         break;
     }
 }

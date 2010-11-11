@@ -15,10 +15,14 @@ public:
 
     void setDataKeepers(const QList<DataKeeper *> *keepers) { dataKeepers = keepers; }
     void setDistanceElements(QVector<DistanceElement> *dElements) { distanceElements = dElements; }
+    QVector<DistanceElement> *getDistanceElements() { return distanceElements; }
 
     int getEstimatedTime();
 
     void setParams(int dim, int ord) { dimension = dim; order = ord; }
+
+    int getDimension() { return dimension; }
+    int getOrder() { return order; }
 
 protected:
     void run();

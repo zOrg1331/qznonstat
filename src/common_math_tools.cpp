@@ -565,6 +565,8 @@ void CommonMathTools::lls_solve_single_ts(int dimension, int order,
     int coeffs_cnt = boost::math::factorial<double>(dimension*1 + order)
                      /(boost::math::factorial<double>(dimension*1)*boost::math::factorial<double>(order));
 
+    ar_coeffs->resize(coeffs_cnt);
+
     QVector< QVector<int> > powers;
     prepearePowers(dimension, order, &powers);
 
