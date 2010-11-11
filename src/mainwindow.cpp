@@ -213,10 +213,6 @@ void MainWindow::on_dataAnalysisSetupMethodButton_clicked()
 {
     switch (ui->dataAnalysisMethodBox->currentIndex()) {
     case 0:
-        disconnect(progress);
-        connect(arModelTune, SIGNAL(progressStep(int)),
-                progress, SLOT(setValue(int)));
-        progress->setMaximum(arModelTune->getEstimatedTime());
         arModelTune->show();
         break;
     }

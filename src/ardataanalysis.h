@@ -24,6 +24,8 @@ public:
     int getDimension() { return dimension; }
     int getOrder() { return order; }
 
+    int calcOptDim(int windowNum, int maxDim, int order);
+
 protected:
     void run();
 

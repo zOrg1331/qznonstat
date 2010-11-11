@@ -157,46 +157,29 @@ void ArModelTune::updateCoeffsSelection()
     }
 }
 
-int ArModelTune::getEstimatedTime()
-{
-    return 0;
-}
-
 void ArModelTune::on_calcOptimumDimension_clicked()
 {
-#if 0
     int order = ui->optimumDimOrderEdit->text().toInt();
     int maxDim = ui->optimumDimMaxEdit->text().toInt();
-    int partsCount = distanceElements1.size();
+    int partsCount = arDataAnalysis->getDistanceElements()->size();
 
-    dimensions1Graph->clear();
-    dimensions2Graph->clear();
+    swartzSeries->clear();
 
     progress->setMaximum(2*partsCount+1);
     progress->setValue(0);
 
-    for (int tsNum = 0; tsNum < 2; tsNum++) {
-        for (int i = 0; i < partsCount; i++) {
-            int dim = nsshell->calcOptDim(tsNum, i, maxDim, order);
-            if (tsNum == 0) {
-                dimensions1Graph->add(ts1From +step*(i+1),
-                                      dim);
-            }
-            if (tsNum == 1) {
-                dimensions2Graph->add(ts2From +step*(i+1),
-                                      dim);
-            }
+    for (int i = 0; i < partsCount; i++) {
+        int dim = arDataAnalysis->calcOptDim(i, maxDim, order);
+        swartzSeries->add(i, dim);
 
-            progress->setValue(progress->value()+1);
-            if (progress->wasCanceled()) {
-                swartzChart->autoscale();
-                progress->setValue(progress->maximum());
-                return;
-            }
+        progress->setValue(progress->value()+1);
+        if (progress->wasCanceled()) {
+            swartzChart->autoscale();
+            progress->setValue(progress->maximum());
+            return;
         }
     }
 
     swartzChart->autoscale();
     progress->setValue(progress->maximum());
-#endif
 }

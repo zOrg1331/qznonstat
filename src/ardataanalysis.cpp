@@ -67,3 +67,8 @@ void ArDataAnalysis::calc()
         }
     }
 }
+
+int ArDataAnalysis::calcOptDim(int windowNum, int maxDim, int order)
+{
+    return 0;
+}

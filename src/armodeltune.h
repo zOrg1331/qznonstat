@@ -18,8 +18,6 @@ public:
     ArModelTune(ArDataAnalysis *arDataAnalysis, QWidget *parent = 0);
     ~ArModelTune();
 
-    int getEstimatedTime();
-
 protected:
 
 private:
