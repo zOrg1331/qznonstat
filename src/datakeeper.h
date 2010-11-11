@@ -26,6 +26,7 @@ public:
     void setDataUseFullTs(const bool useFullTs);
     void setDataUseSeconds(const bool useSeconds) { dataUseSeconds = useSeconds; }
     void setDataSampling(const int sampling) { dataSampling = sampling; }
+    void setDataNormalize(const bool normalize) { dataNormalize = normalize; }
 
     int getDataFrom() { return dataFrom; }
     int getDataTo() { return dataTo; }
@@ -34,6 +35,7 @@ public:
     bool getDataUseFullTs() { return dataUseFullTs; }
     bool getDataUseSeconds() { return dataUseSeconds; }
     int getDataSampling() { return dataSampling; }
+    bool getDataNormalize() { return dataNormalize; }
 
     int getWindowsCount();
 
@@ -63,6 +65,11 @@ private:
     bool dataUseFullTs;
     bool dataUseSeconds;
     int dataSampling;
+    bool dataNormalize;
+
+    double mean;
+    double disp;
+    double stddev;
 
 };
 

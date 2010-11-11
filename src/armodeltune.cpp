@@ -119,13 +119,12 @@ void ArModelTune::updateGraphs(bool normalize)
 
 void ArModelTune::showModel()
 {
-    CommonMathTools *cmtObj = new CommonMathTools();
     QString model = "x_n = c0 + ";
 
     QVector< QVector<int> > powers;
-    cmtObj->prepearePowers(arDataAnalysis->getDimension(),
-                           arDataAnalysis->getOrder(),
-                           &powers);
+    CommonMathTools::prepearePowers(arDataAnalysis->getDimension(),
+                                    arDataAnalysis->getOrder(),
+                                    &powers);
 
     int coeffsCount = powers.size();
     for (int c = 1; c < coeffsCount; c++) {
@@ -143,8 +142,6 @@ void ArModelTune::showModel()
     }
     model.chop(3);
     ui->arModelEdit->setPlainText(model);
-
-    delete cmtObj;
 }
 
 void ArModelTune::on_normalizeCoeffsChk_clicked()

@@ -1,6 +1,7 @@
 #include "datakeeper.h"
 
 #include "zchart.h"
+#include "common_math_tools.h"
 
 #include <QFile>
 #include <QFileInfo>
@@ -10,11 +11,16 @@ DataKeeper::DataKeeper()
 {
     dataFrom = 0;
     dataTo = 10000;
-    dataWindow = 500;
-    dataWindowStep = 500;
-    dataUseFullTs = false;
+    dataWindow = 100;
+    dataWindowStep = 20;
+    dataUseFullTs = true;
     dataUseSeconds = false;
     dataSampling = 250;
+    dataNormalize = true;
+
+    mean = 0.0;
+    disp = 1.0;
+    stddev = 1.0;
 
     chart = new ZChart();
     chart->setBorderType(0);
@@ -91,6 +97,8 @@ void DataKeeper::setDataFileName(const QString name)
     }
 
     redrawData();
+
+    CommonMathTools::calcStats(data, &mean, &disp, &stddev);
 }
 
 void DataKeeper::redrawData()
@@ -117,8 +125,14 @@ int DataKeeper::getWindowsCount()
 
 void DataKeeper::getDataInWindow(int windowNum, QVector<double> *dataIn)
 {
+    double val;
     dataIn->clear();
     for (int i = 0; i < dataWindow; i++) {
-        dataIn->append(data.at(dataFrom + windowNum*dataWindowStep + i));
+        val = data.at(dataFrom + windowNum*dataWindowStep + i);
+        if (dataNormalize) {
+            val -= mean;
+            val /= stddev;
+        }
+        dataIn->append(val);
     }
 }

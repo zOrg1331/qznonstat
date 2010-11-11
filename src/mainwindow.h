@@ -52,6 +52,7 @@ private slots:
     void on_doDataAnalysisButton_clicked();
     void on_dataAnalysisSetupMethodButton_clicked();
     void enable_dataAnalysisSetupMethodButton();
+    void on_dataNormalizeCheck_clicked(bool checked);
 };
 
 #endif // MAINWINDOW_H

@@ -102,6 +102,12 @@ public:
 //                       VECTOR_D *ar_coeffs,
 //                       int order = 1);
 
+    static void calcStats(const VECTOR_D &data,
+                          double *mean, double *disp, double *stddev);
+
+    static void calcStats(const QVector<double> &data,
+                          double *mean, double *disp, double *stddev);
+
     int gaussSolve(const MATRIX& A,
                    const VECTOR_D& B,
                    VECTOR_D& X);
@@ -112,7 +118,7 @@ public:
     int calcDeterminant(const MATRIX& A,
                         double & Det);
 
-    void prepearePowers(int dimension, int order, QVector< QVector<int> > *powers);
+    static void prepearePowers(int dimension, int order, QVector< QVector<int> > *powers);
 
     void lls_solve_single_ts(int dimension, int order,
                              const VECTOR_D &data,
@@ -121,7 +127,6 @@ public:
 //    VECTOR_C fft(int p, const VECTOR_D &in);
 
 private:
-//    void calcStats();
 //    void normalizeTS();
 
     double getBasisFuncValue_single_ts(int Pi, int dimension, int Ni,

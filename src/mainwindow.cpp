@@ -46,6 +46,8 @@ void MainWindow::fillDataSettingsWidgets(DataKeeper *dataKeeper)
         else ui->dataAllCheck->setChecked(false);
         if (dataKeeper->getDataUseSeconds()) ui->dataSecondsCheck->setChecked(true);
         else ui->dataSecondsCheck->setChecked(false);
+        if (dataKeeper->getDataNormalize()) ui->dataNormalizeCheck->setChecked(true);
+        else ui->dataNormalizeCheck->setChecked(false);
         ui->fileNameLabel->setText(trUtf8("Файл: %1")
                                    .arg(QFileInfo(dataKeeper->getDataFileName()).baseName()));
     }
@@ -60,6 +62,7 @@ void MainWindow::disableDataSettingsWidgets(bool disable) {
     ui->dataAllCheck->setDisabled(disable);
     ui->dataSecondsCheck->setDisabled(disable);
     ui->dataSamplingEdit->setDisabled(disable);
+    ui->dataNormalizeCheck->setDisabled(disable);
 }
 
 void MainWindow::on_timeSeriesesTabs_currentChanged(int index)
@@ -173,6 +176,14 @@ void MainWindow::on_dataSecondsCheck_clicked(bool checked)
     if (!dataKeeper) return;
     dataKeeper->setDataUseSeconds(checked);
     dataKeeper->redrawData();
+}
+
+
+void MainWindow::on_dataNormalizeCheck_clicked(bool checked)
+{
+    DataKeeper *dataKeeper = dataKeepers[ui->timeSeriesesTabs->currentIndex()];
+    if (!dataKeeper) return;
+    dataKeeper->setDataNormalize(checked);
 }
 
 void MainWindow::on_doDataAnalysisButton_clicked()

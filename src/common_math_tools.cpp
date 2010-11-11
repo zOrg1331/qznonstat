@@ -164,21 +164,6 @@ CommonMathTools::CommonMathTools()
 //    return 0;
 //}
 
-//void CommonMathTools::calcStats()
-//{
-//    for (int i = 0; i < tsCount; i++) {
-//        boost::math::tools::stats<double> ts_stats;
-//        int tsLen = tsValues[0].size();
-//        for (int j = 0; j < tsLen; j++) {
-//            ts_stats.add(tsValues[i][j]);
-//        }
-//        tsMean[i] = ts_stats.mean();
-//        // ts_stats.variance1(); ?
-//        tsDisp[i] = ts_stats.variance();
-//        tsStdDev[i] = sqrt(tsDisp[i]);
-//    }
-//}
-
 //void CommonMathTools::normalizeTS()
 //{
 //    int tsLen = tsValues[0].size();
@@ -444,6 +429,32 @@ CommonMathTools::CommonMathTools()
 //    }
 //    return out;
 //}
+
+void CommonMathTools::calcStats(const VECTOR_D &data,
+                                double *mean, double *disp, double *stddev)
+{
+    boost::math::tools::stats<double> ts_stats;
+    int tsLen = data.size();
+    for (int i = 0; i < tsLen; i++) {
+        ts_stats.add(data[i]);
+    }
+    *mean = ts_stats.mean();
+    *disp = ts_stats.variance();
+    *stddev = sqrt(*disp);
+}
+
+void CommonMathTools::calcStats(const QVector<double> &data,
+                                double *mean, double *disp, double *stddev)
+{
+    boost::math::tools::stats<double> ts_stats;
+    int tsLen = data.size();
+    for (int i = 0; i < tsLen; i++) {
+        ts_stats.add(data.at(i));
+    }
+    *mean = ts_stats.mean();
+    *disp = ts_stats.variance();
+    *stddev = sqrt(*disp);
+}
 
 int CommonMathTools::gaussSolve(const MATRIX& A,
                                 const VECTOR_D& B,
