@@ -10,6 +10,7 @@ namespace Ui {
 class QProgressDialog;
 
 class DataKeeper;
+class DistanceElement;
 class ArDataAnalysis;
 
 class MainWindow : public QMainWindow
@@ -29,6 +30,8 @@ private:
     QProgressDialog *progress;
 
     QList<DataKeeper *> dataKeepers;
+
+    QVector<DistanceElement> distanceElements;
 
     ArDataAnalysis *arDataAnalysisRoutine;
 

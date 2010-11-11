@@ -16,7 +16,8 @@ SOURCES += src/main.cpp\
         src/zframes.cpp \
     src/datakeeper.cpp \
     src/ardataanalysis.cpp \
-    src/common_math_tools.cpp
+    src/common_math_tools.cpp \
+    src/distanceelement.cpp
 
 HEADERS  += src/mainwindow.h \
             src/zchart.h \
@@ -26,6 +27,7 @@ HEADERS  += src/mainwindow.h \
     src/common_math_tools.h \
     src/pcg.hpp \
     src/cholesky.hpp \
-    src/precond.hpp
+    src/precond.hpp \
+    src/distanceelement.h
 
 FORMS    += src/mainwindow.ui

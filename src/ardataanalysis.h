@@ -5,6 +5,7 @@
 
 class DataKeeper;
 class CommonMathTools;
+class DistanceElement;
 
 class ArDataAnalysis : public QThread
 {
@@ -13,6 +14,7 @@ public:
     explicit ArDataAnalysis(QObject *parent = 0);
 
     void setDataKeepers(const QList<DataKeeper *> *keepers) { dataKeepers = keepers; }
+    void setDistanceElements(QVector<DistanceElement> *dElements) { distanceElements = dElements; }
 
     int getEstimatedTime();
 
@@ -30,6 +32,7 @@ private:
     void calc();
 
     const QList<DataKeeper *> *dataKeepers;
+    QVector<DistanceElement> *distanceElements;
     CommonMathTools *cmtObj;
     int dimension;
     int order;

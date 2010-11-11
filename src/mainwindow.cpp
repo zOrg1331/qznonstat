@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 
 #include "datakeeper.h"
+#include "distanceelement.h"
 #include "ardataanalysis.h"
 
 #include <QFileDialog>
@@ -21,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     arDataAnalysisRoutine = new ArDataAnalysis();
     arDataAnalysisRoutine->setDataKeepers(&dataKeepers);
+    arDataAnalysisRoutine->setDistanceElements(&distanceElements);
     connect(arDataAnalysisRoutine, SIGNAL(progressStep(int)),
             progress, SLOT(setValue(int)));
 }
@@ -97,7 +99,7 @@ void MainWindow::on_loadDataButton_clicked()
     QString fileName = QFileDialog::getOpenFileName(this,
                                                     trUtf8("Открыть временной ряд"),
                                                     "",
-                                                    tr("Временные ряды (*.txt *.dat)"));
+                                                    trUtf8("Временные ряды (*.txt *.dat)"));
     if (!fileName.isEmpty()) {
         ui->fileNameLabel->setText(trUtf8("Файл: %1")
                                    .arg(QFileInfo(fileName).baseName()));
