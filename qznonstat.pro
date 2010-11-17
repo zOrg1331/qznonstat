@@ -18,7 +18,8 @@ SOURCES += src/main.cpp\
     src/ardataanalysis.cpp \
     src/common_math_tools.cpp \
     src/distanceelement.cpp \
-    src/armodeltune.cpp
+    src/armodeltune.cpp \
+    src/splitsclusterisation.cpp
 
 HEADERS  += src/mainwindow.h \
             src/zchart.h \
@@ -30,6 +31,7 @@ HEADERS  += src/mainwindow.h \
     src/cholesky.hpp \
     src/precond.hpp \
     src/distanceelement.h \
-    src/armodeltune.h
+    src/armodeltune.h \
+    src/splitsclusterisation.h
 
 FORMS    += src/mainwindow.ui src/armodeltune.ui

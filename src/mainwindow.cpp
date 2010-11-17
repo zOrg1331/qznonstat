@@ -5,6 +5,7 @@
 #include "distanceelement.h"
 #include "ardataanalysis.h"
 #include "armodeltune.h"
+#include "splitsclusterisation.h"
 
 #include <QFileDialog>
 #include <QProgressDialog>
@@ -15,6 +16,9 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->timeSeriesesTabs->removeTab(0);
+    
+    ui->dataAnalysisTabs->setTabText(0, trUtf8("Расчет \"координат\" объектов кластеризации"));
+    ui->dataAnalysisTabs->setTabText(1, trUtf8("Кластеризация"));
 
     progress = new QProgressDialog(trUtf8("Идет расчет..."), "Отмена", 0, 1, this);
     progress->setWindowModality(Qt::ApplicationModal);
@@ -27,6 +31,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     arModelTune = new ArModelTune(arDataAnalysisRoutine, this);
     arModelTune->hide();
+    
+    splitsClusterisationRoutine = new SplitsClusterisation();
+    splitsClusterisationRoutine->setDataKeepers(&dataKeepers);
+    splitsClusterisationRoutine->setDistanceElements(&distanceElements);
 }
 
 MainWindow::~MainWindow()
@@ -214,6 +222,21 @@ void MainWindow::on_dataAnalysisSetupMethodButton_clicked()
     switch (ui->dataAnalysisMethodBox->currentIndex()) {
     case 0:
         arModelTune->show();
+        break;
+    }
+}
+
+void MainWindow::on_doClusterButton_clicked()
+{
+    switch (ui->clusterMethodBox->currentIndex()) {
+    case 0:
+        progress->setMaximum(splitsClusterisationRoutine->getEstimatedTime());
+        disconnect(progress);
+        connect(splitsClusterisationRoutine, SIGNAL(progressStep(int)),
+                progress, SLOT(setValue(int)));
+        splitsClusterisationRoutine->setParams(ui->clusterParam1Edit->text().toInt(),
+                                               ui->clusterParam2Edit->text().toInt());
+        splitsClusterisationRoutine->start();
         break;
     }
 }

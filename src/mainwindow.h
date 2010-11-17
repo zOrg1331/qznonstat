@@ -13,6 +13,7 @@ class DataKeeper;
 class DistanceElement;
 class ArDataAnalysis;
 class ArModelTune;
+class SplitsClusterisation;
 
 class MainWindow : public QMainWindow
 {
@@ -36,6 +37,8 @@ private:
 
     ArDataAnalysis *arDataAnalysisRoutine;
     ArModelTune *arModelTune;
+    
+    SplitsClusterisation *splitsClusterisationRoutine;
 
 private slots:
     void on_addDataButton_clicked();
@@ -53,6 +56,7 @@ private slots:
     void on_dataAnalysisSetupMethodButton_clicked();
     void enable_dataAnalysisSetupMethodButton();
     void on_dataNormalizeCheck_clicked(bool checked);
+    void on_doClusterButton_clicked();
 };
 
 #endif // MAINWINDOW_H
