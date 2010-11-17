@@ -24,10 +24,16 @@ private:
     SplitsClusterisation *splitsClusterisation;
 
     QProgressDialog *progress;
+    
+    QGraphicsScene partsScene;
+    
+    QVector<QMap<int, QVector<DistanceElement> > *> clustersVector;
 
 private slots:
     void updateClustersTable();
+    void updateClustersGraph();
     void on_calcClustersButton_clicked();
+    void on_drawClustersGraph_clicked();
     
 signals:
     void progressStep(int);

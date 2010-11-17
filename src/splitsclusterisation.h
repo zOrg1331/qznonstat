@@ -18,6 +18,7 @@ public:
     const QList<DataKeeper *> *getDataKeepers() { return dataKeepers; }
     
     void setDistanceElements(const QVector<DistanceElement> *dElements) { distanceElements = dElements; }
+    const QVector<DistanceElement> *getDistanceElements() { return distanceElements; }
     
     void setClusters(QMap<int, QVector<DistanceElement> > *clusters_) { clusters = clusters_; }
     QMap<int, QVector<DistanceElement> > *getClusters() { return clusters; }
