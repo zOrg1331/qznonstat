@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QMap>
 
 namespace Ui {
     class MainWindow;
@@ -34,6 +35,8 @@ private:
     QList<DataKeeper *> dataKeepers;
 
     QVector<DistanceElement> distanceElements;
+    
+    QMap<int, QVector<DistanceElement> > clusters;
 
     ArDataAnalysis *arDataAnalysisRoutine;
     ArModelTune *arModelTune;
@@ -55,6 +58,8 @@ private slots:
     void on_doDataAnalysisButton_clicked();
     void on_dataAnalysisSetupMethodButton_clicked();
     void enable_dataAnalysisSetupMethodButton();
+    void enable_doClusterButton();
+    void enable_clusterSetupMethodButton();
     void on_dataNormalizeCheck_clicked(bool checked);
     void on_doClusterButton_clicked();
 };

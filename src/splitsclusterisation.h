@@ -2,9 +2,11 @@
 #define SPLITSCLUSTERISATION_H
 
 #include <QThread>
+#include <QMap>
 
 class DataKeeper;
 class DistanceElement;
+class NSCube;
 
 class SplitsClusterisation : public QThread
 {
@@ -13,8 +15,9 @@ public:
     explicit SplitsClusterisation(QObject *parent = 0);
 
     void setDataKeepers(const QList<DataKeeper *> *keepers) { dataKeepers = keepers; }
-    void setDistanceElements(QVector<DistanceElement> *dElements) { distanceElements = dElements; }
-    QVector<DistanceElement> *getDistanceElements() { return distanceElements; }
+    void setDistanceElements(const QVector<DistanceElement> *dElements) { distanceElements = dElements; }
+    void setClusters(QMap<int, QVector<DistanceElement> > *clusters_) { clusters = clusters_; }
+    QMap<int, QVector<DistanceElement> > *getClusters() { return clusters; }
 
     int getEstimatedTime();
 
@@ -33,9 +36,14 @@ public slots:
 
 private:
     void calc();
-
+    bool markCubeAndNeighborsAsCluster(const QVector<NSCube *> & hyperCube,
+                                       int cubeNum,
+                                       int clusterNum);
+    
     const QList<DataKeeper *> *dataKeepers;
-    QVector<DistanceElement> *distanceElements;
+    const QVector<DistanceElement> *distanceElements;
+    QMap<int, QVector<DistanceElement> > *clusters;
+   
     int splitsCount;
     int minPartsCount;
 

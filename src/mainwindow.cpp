@@ -35,6 +35,7 @@ MainWindow::MainWindow(QWidget *parent) :
     splitsClusterisationRoutine = new SplitsClusterisation();
     splitsClusterisationRoutine->setDataKeepers(&dataKeepers);
     splitsClusterisationRoutine->setDistanceElements(&distanceElements);
+    splitsClusterisationRoutine->setClusters(&clusters);
 }
 
 MainWindow::~MainWindow()
@@ -205,6 +206,8 @@ void MainWindow::on_doDataAnalysisButton_clicked()
         ui->dataAnalysisSetupMethodButton->setEnabled(false);
         connect(arDataAnalysisRoutine, SIGNAL(finished()),
                 this, SLOT(enable_dataAnalysisSetupMethodButton()));
+        connect(arDataAnalysisRoutine, SIGNAL(finished()),
+                this, SLOT(enable_doClusterButton()));
         arDataAnalysisRoutine->setParams(ui->dataAnalysisParam1Edit->text().toInt(),
                                          ui->dataAnalysisParam2Edit->text().toInt());
         arDataAnalysisRoutine->start();
@@ -215,6 +218,16 @@ void MainWindow::on_doDataAnalysisButton_clicked()
 void MainWindow::enable_dataAnalysisSetupMethodButton()
 {
     ui->dataAnalysisSetupMethodButton->setEnabled(true);
+}
+
+void MainWindow::enable_clusterSetupMethodButton()
+{
+    ui->clusterSetupMethodButton->setEnabled(true);
+}
+
+void MainWindow::enable_doClusterButton()
+{
+    ui->doClusterButton->setEnabled(true);
 }
 
 void MainWindow::on_dataAnalysisSetupMethodButton_clicked()
@@ -234,6 +247,8 @@ void MainWindow::on_doClusterButton_clicked()
         disconnect(progress);
         connect(splitsClusterisationRoutine, SIGNAL(progressStep(int)),
                 progress, SLOT(setValue(int)));
+        connect(splitsClusterisationRoutine, SIGNAL(finished()),
+                this, SLOT(enable_clusterSetupMethodButton()));
         splitsClusterisationRoutine->setParams(ui->clusterParam1Edit->text().toInt(),
                                                ui->clusterParam2Edit->text().toInt());
         splitsClusterisationRoutine->start();
