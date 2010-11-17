@@ -15,7 +15,10 @@ public:
     explicit SplitsClusterisation(QObject *parent = 0);
 
     void setDataKeepers(const QList<DataKeeper *> *keepers) { dataKeepers = keepers; }
+    const QList<DataKeeper *> *getDataKeepers() { return dataKeepers; }
+    
     void setDistanceElements(const QVector<DistanceElement> *dElements) { distanceElements = dElements; }
+    
     void setClusters(QMap<int, QVector<DistanceElement> > *clusters_) { clusters = clusters_; }
     QMap<int, QVector<DistanceElement> > *getClusters() { return clusters; }
 

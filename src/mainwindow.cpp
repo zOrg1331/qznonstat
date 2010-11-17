@@ -6,6 +6,7 @@
 #include "ardataanalysis.h"
 #include "armodeltune.h"
 #include "splitsclusterisation.h"
+#include "splitsclusterisationtune.h"
 
 #include <QFileDialog>
 #include <QProgressDialog>
@@ -36,6 +37,9 @@ MainWindow::MainWindow(QWidget *parent) :
     splitsClusterisationRoutine->setDataKeepers(&dataKeepers);
     splitsClusterisationRoutine->setDistanceElements(&distanceElements);
     splitsClusterisationRoutine->setClusters(&clusters);
+    
+    splitsClusterisationTune = new SplitsClusterisationTune(splitsClusterisationRoutine, this);
+    splitsClusterisationTune->hide();
 }
 
 MainWindow::~MainWindow()
@@ -252,6 +256,15 @@ void MainWindow::on_doClusterButton_clicked()
         splitsClusterisationRoutine->setParams(ui->clusterParam1Edit->text().toInt(),
                                                ui->clusterParam2Edit->text().toInt());
         splitsClusterisationRoutine->start();
+        break;
+    }
+}
+
+void MainWindow::on_clusterSetupMethodButton_clicked()
+{
+    switch (ui->clusterMethodBox->currentIndex()) {
+    case 0:
+        splitsClusterisationTune->show();
         break;
     }
 }

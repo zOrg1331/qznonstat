@@ -20,7 +20,8 @@ SOURCES += src/main.cpp\
     src/distanceelement.cpp \
     src/armodeltune.cpp \
     src/splitsclusterisation.cpp \
-    src/nscube.cpp
+    src/nscube.cpp \
+    src/splitsclusterisationtune.cpp
 
 HEADERS  += src/mainwindow.h \
             src/zchart.h \
@@ -34,6 +35,7 @@ HEADERS  += src/mainwindow.h \
     src/distanceelement.h \
     src/armodeltune.h \
     src/splitsclusterisation.h \
-    src/nscube.h
+    src/nscube.h \
+    src/splitsclusterisationtune.h
 
-FORMS    += src/mainwindow.ui src/armodeltune.ui
+FORMS    += src/mainwindow.ui src/armodeltune.ui src/splitsclusterisationtune.ui
