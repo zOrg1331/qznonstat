@@ -76,6 +76,8 @@ void SplitsClusterisationTune::updateClustersTable()
         row++;
     }
     ui->clustersTable->resizeColumnsToContents();
+    
+    ui->partsCntEdit->setValue(splitsClusterisation->getSplits());
 }
 
 void SplitsClusterisationTune::on_drawClustersGraph_clicked()
