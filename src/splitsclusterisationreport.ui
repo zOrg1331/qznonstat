@@ -19,15 +19,8 @@
      <item row="0" column="0" colspan="2">
       <widget class="QLabel" name="commonPartsLabel">
        <property name="text">
-        <string>Общие участки:</string>
+        <string>Распределение кластеров:</string>
        </property>
-      </widget>
-     </item>
-     <item row="1" column="0" colspan="2">
-      <widget class="QTableView" name="clustersRepTableView">
-       <attribute name="verticalHeaderVisible">
-        <bool>false</bool>
-       </attribute>
       </widget>
      </item>
      <item row="2" column="0">
@@ -42,6 +35,23 @@
        <property name="text">
         <string>Сохранить отчет в файл...</string>
        </property>
+      </widget>
+     </item>
+     <item row="1" column="0" colspan="2">
+      <widget class="QTableWidget" name="clustersRepTableWidget">
+       <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+        <bool>false</bool>
+       </attribute>
+       <column>
+        <property name="text">
+         <string>ряд</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>распределение кластров</string>
+        </property>
+       </column>
       </widget>
      </item>
     </layout>

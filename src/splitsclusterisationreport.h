@@ -20,8 +20,6 @@ private:
     
     SplitsClusterisation *splitsClusterisation;
 
-    QStandardItemModel *clustersRepModel;
-
 private slots:
 
     void on_updateRepButton_clicked();

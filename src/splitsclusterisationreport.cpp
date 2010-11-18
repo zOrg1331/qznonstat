@@ -1,6 +1,9 @@
 #include "splitsclusterisationreport.h"
 #include "ui_splitsclusterisationreport.h"
 
+#include "distanceelement.h"
+#include "datakeeper.h"
+
 SplitsClusterisationReport::SplitsClusterisationReport(SplitsClusterisation *splitsClusterisation, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::SplitsClusterisationReport),
@@ -8,14 +11,6 @@ SplitsClusterisationReport::SplitsClusterisationReport(SplitsClusterisation *spl
 {
     ui->setupUi(this);
     this->setWindowFlags(Qt::Window);
-
-    clustersRepModel = new QStandardItemModel(0, 0, this);
-
-    QStringList hLabels;
-    hLabels << trUtf8("№");
-    clustersRepModel->setHorizontalHeaderLabels(hLabels);
-
-    ui->clustersRepTableView->setModel(clustersRepModel);
 }
 
 SplitsClusterisationReport::~SplitsClusterisationReport()
@@ -26,17 +21,30 @@ SplitsClusterisationReport::~SplitsClusterisationReport()
 void SplitsClusterisationReport::on_updateRepButton_clicked()
 {
 #if 0
-    QMapIterator<int, QVector<NSDistanceElement> > i(clusters);
-    modelTs1->setRowCount(0);
-    modelTs2->setRowCount(0);
-    int rowTs1 = 0;
-    int rowTs2 = 0;
-    int rowTs12 = 0;
-    while (i.hasNext()) {
-        i.next();
-        int ts1Count = 0;
-        int ts2Count = 0;
-        for (int j = 0; j < i.value().size(); j++) {
+    int tsCount = splitsClusterisation->getDataKeepers()->size();
+    QMap<int, QVector<DistanceElement> > *clusters = splitsClusterisation->getClusters();
+    
+    
+    for (int i = 0; i < tsCount; i++) {
+        QMap<int, double> percentageRatio;
+
+        foreach (int cluster, clusters->keys()) {
+            percentageRatio[cluster] = clusters->value(cluster).size()/
+                    (double)splitsClusterisation->getDataKeepers()->at(i)->getWindowsCount();
+        }
+        
+        QWidget *w = new QWidget;
+        
+    }
+#endif
+    
+#if 0
+    QMap<int, QVector<NSDistanceElement> > *clusters = splitsClusterisation->getClusters();
+    
+    int rowTs = 0;
+    foreach (int cluster, clusters->keys()) {
+        int tsCount = 0;
+        for (int j = 0; j < clusters->value(cluster).size(); j++) {
             if (i.value().at(j).getTsNum() == 1) ts1Count++;
             if (i.value().at(j).getTsNum() == 2) ts2Count++;
         }
@@ -92,15 +100,9 @@ void SplitsClusterisationReport::on_updateRepButton_clicked()
             rowTs12++;
         }
     }
-    ui->ts1RepTableView->setSortingEnabled(true);
-    ui->ts2RepTableView->setSortingEnabled(true);
-    ui->ts12RepTableView->setSortingEnabled(true);
-    ui->ts1RepTableView->sortByColumn(1, Qt::DescendingOrder);
-    ui->ts2RepTableView->sortByColumn(1, Qt::DescendingOrder);
-    ui->ts12RepTableView->sortByColumn(2, Qt::DescendingOrder);
-    ui->ts1RepTableView->resizeColumnsToContents();
-    ui->ts2RepTableView->resizeColumnsToContents();
-    ui->ts12RepTableView->resizeColumnsToContents();
+    ui->clustersRepTableView->setSortingEnabled(true);
+    ui->clustersTableView->sortByColumn(2, Qt::DescendingOrder);
+    ui->clustersRepTableView->resizeColumnsToContents();
 #endif
 }
 
