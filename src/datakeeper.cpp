@@ -113,8 +113,12 @@ void DataKeeper::redrawData()
     for (int i = 0; i < data.size(); i++) {
         graph->add(i/(double)sampling, data.at(i));
     }
-    chart->autoscale();
-    if (!dataUseFullTs) chart->setXRange(dataFrom, dataTo);
+    if (!dataUseFullTs) {
+        chart->setXRange(dataFrom, dataTo);
+        chart->autoscale1(dataFrom, dataTo);
+    } else {
+        chart->autoscale();
+    }
 }
 
 QString DataKeeper::getDescription()

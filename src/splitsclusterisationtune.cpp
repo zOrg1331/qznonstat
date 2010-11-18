@@ -126,17 +126,22 @@ void SplitsClusterisationTune::updateClustersGraph()
 
         int i = 0;
         foreach (int cluster, clusters->keys()) {
-            NSClusterItem *item = new NSClusterItem;
-            item->setRect((partI+1)*(maxClusterWidth+clustersMargin),
-                          -i*(maxClusterWidth+clustersMargin),
-                          maxClusterWidth*(clusters->value(cluster).size()/(double)maxClusterElements),
-                          maxClusterWidth*(clusters->value(cluster).size()/(double)maxClusterElements));
-            item->setPen(QPen(Qt::black));
-            item->setBrush(QBrush(Qt::darkRed));
-            item->partsCnt = partI;
-            item->clusterNum = cluster;
-            partsScene.addItem(item);
-            i++;
+            if (((ui->fivePercentLinesLimitBox->isChecked()) &&
+                 ((double)clusters->value(cluster).size()/(double)maxClusterElements > 0.05)) ||
+                    (!ui->fivePercentLinesLimitBox->isChecked()))
+            {
+                NSClusterItem *item = new NSClusterItem;
+                item->setRect((partI+1)*(maxClusterWidth+clustersMargin),
+                              -i*(maxClusterWidth+clustersMargin),
+                              maxClusterWidth*(clusters->value(cluster).size()/(double)maxClusterElements),
+                              maxClusterWidth*(clusters->value(cluster).size()/(double)maxClusterElements));
+                item->setPen(QPen(Qt::black));
+                item->setBrush(QBrush(Qt::darkRed));
+                item->partsCnt = partI;
+                item->clusterNum = cluster;
+                partsScene.addItem(item);
+                i++;
+            }
         }
 
         if (partI >= 1) {
@@ -180,31 +185,37 @@ void SplitsClusterisationTune::updateClustersGraph()
                 }
 
                 foreach (int line, linesCount.keys()) {
-                    QPointF oldClusterPos;
-                    int oldClusterWidth;
-                    QPointF clusterPos;
-                    int clusterWidth;
-                    
-                    QList<QGraphicsItem *> items = partsScene.items();
-                    for (int i = 0; i < items.size(); i++) {
-                        NSClusterItem *item = qgraphicsitem_cast<NSClusterItem*>(items.at(i));
-                        if (item) {
-                            if ((item->partsCnt == (partI-1)) && (item->clusterNum == clusterPrev)) {
-                                oldClusterPos = item->rect().topLeft();
-                                oldClusterWidth = item->rect().width();
-                            }
-                            if ((item->partsCnt == partI) && (item->clusterNum == line)) {
-                                clusterPos = item->rect().topLeft();
-                                clusterWidth = item->rect().width();
+                    // рисуем только линии, которые описывают переход более 5% участков
+                    if (((ui->fivePercentLinesLimitBox->isChecked()) &&
+                         ((double)linesCount.value(line)/(double)maxClusterElements > 0.05)) ||
+                            (!ui->fivePercentLinesLimitBox->isChecked()))
+                    {
+                        QPointF oldClusterPos;
+                        int oldClusterWidth;
+                        QPointF clusterPos;
+                        int clusterWidth;
+                        
+                        QList<QGraphicsItem *> items = partsScene.items();
+                        for (int i = 0; i < items.size(); i++) {
+                            NSClusterItem *item = qgraphicsitem_cast<NSClusterItem*>(items.at(i));
+                            if (item) {
+                                if ((item->partsCnt == (partI-1)) && (item->clusterNum == clusterPrev)) {
+                                    oldClusterPos = item->rect().topLeft();
+                                    oldClusterWidth = item->rect().width();
+                                }
+                                if ((item->partsCnt == partI) && (item->clusterNum == line)) {
+                                    clusterPos = item->rect().topLeft();
+                                    clusterWidth = item->rect().width();
+                                }
                             }
                         }
+                        partsScene.addLine(oldClusterPos.x()+oldClusterWidth/2,
+                                           oldClusterPos.y()+oldClusterWidth/2,
+                                           clusterPos.x()+clusterWidth/2,
+                                           clusterPos.y()+clusterWidth/2,
+                                           QPen(Qt::black,
+                                                5.0*(double)linesCount.value(line)/(double)distanceElementsPrevCntMax));
                     }
-                    partsScene.addLine(oldClusterPos.x()+oldClusterWidth/2,
-                                       oldClusterPos.y()+oldClusterWidth/2,
-                                       clusterPos.x()+clusterWidth/2,
-                                       clusterPos.y()+clusterWidth/2,
-                                       QPen(Qt::black,
-                                            5.0*(double)linesCount.value(line)/(double)distanceElementsPrevCntMax));
                 }
             }
         }
