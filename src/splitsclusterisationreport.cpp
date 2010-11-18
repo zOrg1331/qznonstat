@@ -1,0 +1,155 @@
+#include "splitsclusterisationreport.h"
+#include "ui_splitsclusterisationreport.h"
+
+SplitsClusterisationReport::SplitsClusterisationReport(SplitsClusterisation *splitsClusterisation, QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::SplitsClusterisationReport),
+    splitsClusterisation(splitsClusterisation)
+{
+    ui->setupUi(this);
+    this->setWindowFlags(Qt::Window);
+
+    clustersRepModel = new QStandardItemModel(0, 0, this);
+
+    QStringList hLabels;
+    hLabels << trUtf8("№");
+    clustersRepModel->setHorizontalHeaderLabels(hLabels);
+
+    ui->clustersRepTableView->setModel(clustersRepModel);
+}
+
+SplitsClusterisationReport::~SplitsClusterisationReport()
+{
+    delete ui;
+}
+
+void SplitsClusterisationReport::on_updateRepButton_clicked()
+{
+#if 0
+    QMapIterator<int, QVector<NSDistanceElement> > i(clusters);
+    modelTs1->setRowCount(0);
+    modelTs2->setRowCount(0);
+    int rowTs1 = 0;
+    int rowTs2 = 0;
+    int rowTs12 = 0;
+    while (i.hasNext()) {
+        i.next();
+        int ts1Count = 0;
+        int ts2Count = 0;
+        for (int j = 0; j < i.value().size(); j++) {
+            if (i.value().at(j).getTsNum() == 1) ts1Count++;
+            if (i.value().at(j).getTsNum() == 2) ts2Count++;
+        }
+        if (ts1Count > 0) {
+            modelTs1->setRowCount(rowTs1+1);
+            QModelIndex index;
+            index = modelTs1->index(rowTs1, 0, QModelIndex());
+            modelTs1->setData(index, QVariant(i.key()), Qt::DisplayRole);
+            index = modelTs1->index(rowTs1, 1, QModelIndex());
+            modelTs1->setData(index, QVariant(ts1Count), Qt::DisplayRole);
+            index = modelTs1->index(rowTs1, 2, QModelIndex());
+            modelTs1->setData(index, QVariant(100*ts1Count/(double)elementsCount), Qt::DisplayRole);
+            index = modelTs1->index(rowTs1, 3, QModelIndex());
+//            QPushButton *button = new QPushButton(trUtf8("сохранить..."));
+//            connect(button, SIGNAL(clicked()), this, SLOT(saveCurrentClusterTs1()));
+//            ui->ts1RepTableView->setIndexWidget(index, button);
+            modelTs1->setData(index, QVariant(trUtf8("сохранить...")), Qt::DisplayRole);
+            index = modelTs1->index(rowTs1, 4, QModelIndex());
+            modelTs1->setData(index, QVariant(trUtf8("спектр...")), Qt::DisplayRole);
+            rowTs1++;
+        }
+        if (ts2Count > 0) {
+            modelTs2->setRowCount(rowTs2+1);
+            QModelIndex index;
+            index = modelTs2->index(rowTs2, 0, QModelIndex());
+            modelTs2->setData(index, QVariant(i.key()), Qt::DisplayRole);
+            index = modelTs2->index(rowTs2, 1, QModelIndex());
+            modelTs2->setData(index, QVariant(ts2Count), Qt::DisplayRole);
+            index = modelTs2->index(rowTs2, 2, QModelIndex());
+            modelTs2->setData(index, QVariant(100*ts2Count/(double)elementsCount), Qt::DisplayRole);
+            index = modelTs2->index(rowTs2, 3, QModelIndex());
+//            QPushButton *button = new QPushButton(trUtf8("сохранить..."));
+//            connect(button, SIGNAL(clicked()), this, SLOT(saveCurrentClusterTs2()));
+//            ui->ts2RepTableView->setIndexWidget(index, button);
+            modelTs2->setData(index, QVariant(trUtf8("сохранить...")), Qt::DisplayRole);
+            index = modelTs2->index(rowTs2, 4, QModelIndex());
+            modelTs2->setData(index, QVariant(trUtf8("спектр...")), Qt::DisplayRole);
+            rowTs2++;
+        }
+        if ((ts1Count > 0) && (ts2Count > 0)) {
+            modelTs12->setRowCount(rowTs12+1);
+            QModelIndex index;
+            index = modelTs12->index(rowTs12, 0, QModelIndex());
+            modelTs12->setData(index, QVariant(i.key()), Qt::DisplayRole);
+            index = modelTs12->index(rowTs12, 1, QModelIndex());
+            modelTs12->setData(index, QVariant(QString("%1/%2").arg(ts1Count).arg(ts2Count)), Qt::DisplayRole);
+            index = modelTs12->index(rowTs12, 2, QModelIndex());
+            modelTs12->setData(index, QVariant(100*(ts1Count+ts2Count)/(double)(2*elementsCount)), Qt::DisplayRole);
+            index = modelTs12->index(rowTs12, 3, QModelIndex());
+            modelTs12->setData(index, QVariant((ts2Count-ts1Count) > 0 ?
+                                               QString("+%1 (+%2\%)").arg(ts2Count-ts1Count).arg(100*(ts2Count-ts1Count)/ts1Count) :
+                                               QString("%1 (%2\%)").arg(ts2Count-ts1Count).arg(100*(ts2Count-ts1Count)/ts1Count)), Qt::DisplayRole);
+            rowTs12++;
+        }
+    }
+    ui->ts1RepTableView->setSortingEnabled(true);
+    ui->ts2RepTableView->setSortingEnabled(true);
+    ui->ts12RepTableView->setSortingEnabled(true);
+    ui->ts1RepTableView->sortByColumn(1, Qt::DescendingOrder);
+    ui->ts2RepTableView->sortByColumn(1, Qt::DescendingOrder);
+    ui->ts12RepTableView->sortByColumn(2, Qt::DescendingOrder);
+    ui->ts1RepTableView->resizeColumnsToContents();
+    ui->ts2RepTableView->resizeColumnsToContents();
+    ui->ts12RepTableView->resizeColumnsToContents();
+#endif
+}
+
+void SplitsClusterisationReport::on_saveRepButton_clicked()
+{
+#if 0
+    QString fileName = QFileDialog::getSaveFileName(this, trUtf8("Сохранить отчет"),
+                                                    "", trUtf8("Текстовые файлы (*.txt)"));
+    QFile file(fileName);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+        return;
+    QTextStream out(&file);
+
+    out << trUtf8("Отчет по сравнению двух временных рядов с помощью кластеризации.\n");
+    out << "\n";
+    out << trUtf8("сравниваемые временные ряды:\n");
+    out << trUtf8("ряд1: ") << ts1FileName << "\n";
+    out << trUtf8("ряд2: ") << ts2FileName << "\n";
+    out << trUtf8("параметры:\n");
+    out << trUtf8("данные  ряд1 от: ") << ts1From << trUtf8(" до: ") << ts1To << "\n";
+    out << trUtf8("        ряд2 от: ") << ts2From << trUtf8(" до: ") << ts2To << "\n";
+    out << trUtf8("        окно: ") << window << "\n";
+    out << trUtf8("        смещение: ") << step << "\n";
+    out << trUtf8("        ширина кластера: ") << clusterLength << "\n";
+    out << trUtf8("метод размерность: ") << dimension << "\n";
+    out << trUtf8("      порядок: ") << order << "\n";
+    out << trUtf8("кластеризация, разделение на кластеры: ") << clustersCount << "\n";
+    out << "\n";
+    out << trUtf8("типы поведения (кластеры) в первом временном ряду:\n");
+    out << qSetFieldWidth(6) << trUtf8("№; ") << trUtf8("кол-во; ") << trUtf8("% от общ. кол-ва") << "\n";
+    for (int i = 0; i < modelTs1->rowCount(); i++) {
+        out << qSetFieldWidth(6) << modelTs1->item(i, 0)->data(Qt::DisplayRole).toString() << " "
+                << modelTs1->item(i, 1)->data(Qt::DisplayRole).toString() << " "
+                << modelTs1->item(i, 2)->data(Qt::DisplayRole).toInt() << "\n";
+    }
+    out << trUtf8("типы поведения (кластеры) во втором временном ряду:\n");
+    out << trUtf8("№; ") << trUtf8("кол-во; ") << trUtf8("% от общ. кол-ва ") << "\n";
+    for (int i = 0; i < modelTs2->rowCount(); i++) {
+        out << qSetFieldWidth(6) << modelTs2->item(i, 0)->data(Qt::DisplayRole).toString() << " "
+                << modelTs2->item(i, 1)->data(Qt::DisplayRole).toString() << " "
+                << modelTs2->item(i, 2)->data(Qt::DisplayRole).toInt() << "\n";
+    }
+    out << trUtf8("общие типы поведения (кластеры) сравнение:\n");
+    out << trUtf8("№; ") << trUtf8("ряд1/ряд2; ") << trUtf8("% от общ. кол-ва; ") << trUtf8("изменение ") << "\n";
+    for (int i = 0; i < modelTs12->rowCount(); i++) {
+        out << qSetFieldWidth(6) << modelTs12->item(i, 0)->data(Qt::DisplayRole).toString() << " "
+                << modelTs12->item(i, 1)->data(Qt::DisplayRole).toString() << " "
+                << modelTs12->item(i, 2)->data(Qt::DisplayRole).toInt() << " "
+                << modelTs12->item(i, 3)->data(Qt::DisplayRole).toString() << "\n";
+    }
+#endif
+}

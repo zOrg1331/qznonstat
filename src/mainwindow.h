@@ -16,6 +16,7 @@ class ArDataAnalysis;
 class ArModelTune;
 class SplitsClusterisation;
 class SplitsClusterisationTune;
+class SplitsClusterisationReport;
 
 class MainWindow : public QMainWindow
 {
@@ -44,6 +45,7 @@ private:
     
     SplitsClusterisation *splitsClusterisationRoutine;
     SplitsClusterisationTune *splitsClusterisationTune;
+    SplitsClusterisationReport *splitsClusterisationReport;
 
 private slots:
     void on_addDataButton_clicked();

@@ -7,6 +7,7 @@
 #include "armodeltune.h"
 #include "splitsclusterisation.h"
 #include "splitsclusterisationtune.h"
+#include "splitsclusterisationreport.h"
 
 #include <QFileDialog>
 #include <QProgressDialog>
@@ -40,6 +41,9 @@ MainWindow::MainWindow(QWidget *parent) :
     
     splitsClusterisationTune = new SplitsClusterisationTune(splitsClusterisationRoutine, this);
     splitsClusterisationTune->hide();
+    
+    splitsClusterisationReport = new SplitsClusterisationReport(splitsClusterisationRoutine, this);
+    splitsClusterisationReport->hide();
 }
 
 MainWindow::~MainWindow()
