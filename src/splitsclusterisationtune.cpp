@@ -208,3 +208,19 @@ void SplitsClusterisationTune::updateClustersGraph()
         }
     }
 }
+
+void SplitsClusterisationTune::on_clustersTable_cellClicked(int row, int column)
+{
+    if (column <= 1) return;
+    
+    int tsNum = column - 2;
+    int clusterNum = ui->clustersTable->item(row, 0)->text().toInt();
+    
+    QVector<DistanceElement> distanceElements = splitsClusterisation->getClusters()->value(clusterNum);
+    QVector<int> parts;
+    for (int i = 0; i < distanceElements.size(); i++) {
+        if (distanceElements.at(i).getTsNum() == tsNum) parts.append(distanceElements.at(i).getWindowNum());
+    }
+    
+    splitsClusterisation->getDataKeepers()->at(tsNum)->showParts(parts);
+}

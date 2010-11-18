@@ -45,6 +45,8 @@ public:
     QString getDescription();
 
     void redrawData();
+    
+    void showParts(const QVector<int> &parts);
 
 signals:
 
@@ -53,6 +55,7 @@ public slots:
 private:
     ZChart *chart;
     ZSimpleSeries *graph;
+    ZSimpleSeries *clusterGraph;
 
     int num;
     QString fileName;

@@ -34,6 +34,7 @@ private slots:
     void updateClustersGraph();
     void on_calcClustersButton_clicked();
     void on_drawClustersGraph_clicked();
+    void on_clustersTable_cellClicked(int row, int column);
     
 signals:
     void progressStep(int);

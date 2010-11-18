@@ -39,6 +39,10 @@ DataKeeper::DataKeeper()
     graph = new ZSimpleSeries("");
     graph->setColor(Qt::red);
     chart->addSeries(graph);
+    
+    clusterGraph = new ZSimpleSeries("");
+    clusterGraph->setColor(Qt::darkGreen);
+    chart->addSeries(clusterGraph);
 }
 
 DataKeeper::~DataKeeper()
@@ -135,4 +139,30 @@ void DataKeeper::getDataInWindow(int windowNum, QVector<double> *dataIn)
         }
         dataIn->append(val);
     }
+}
+
+void DataKeeper::showParts(const QVector<int> &parts_)
+{
+    double clusterLength = dataWindowStep;
+
+    QVector<int> parts = parts_;
+    qSort(parts);
+
+    double min = 0;
+    double max = 0;
+    if (parts.size() > 0) {
+        min = graph->getMinYy(dataFrom + dataWindowStep*parts.first(), dataFrom + dataWindowStep*parts.last() + dataWindow);
+        max = graph->getMaxYy(dataFrom + dataWindowStep*parts.first(), dataFrom + dataWindowStep*parts.last() + dataWindow);
+    }
+
+    clusterGraph->clear();
+
+    for (int i = 0; i < parts.size(); i++) {
+        clusterGraph->add(dataFrom + dataWindowStep*parts.at(i), min);
+        clusterGraph->add(dataFrom + dataWindowStep*parts.at(i), max);
+        clusterGraph->add(dataFrom + dataWindowStep*parts.at(i)+clusterLength, max);
+        clusterGraph->add(dataFrom + dataWindowStep*parts.at(i)+clusterLength, min);
+    }
+    
+    redrawData();
 }
