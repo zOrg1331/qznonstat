@@ -27,7 +27,7 @@ private:
     
     QGraphicsScene partsScene;
     
-    QVector<QMap<int, QVector<DistanceElement> > *> clustersVector;
+    QVector<QMap<int, QVector<DistanceElement> > > clustersVector;
 
 private slots:
     void updateClustersTable();

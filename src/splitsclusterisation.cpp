@@ -28,7 +28,7 @@ void SplitsClusterisation::run()
 
 void SplitsClusterisation::calc()
 {
-    int m = splitsCount;
+    int m = 1 << splitsCount;
     int d = distanceElements->at(0).getCoeffs().size();
     double max = -1e10;
     double min = 1e10;
@@ -40,6 +40,8 @@ void SplitsClusterisation::calc()
             if (coeffs.at(j) < min) min = coeffs.at(j);
         }
     }
+    max += 0.01*max;
+    min -= 0.01*min;
 
     QVector<NSCube *> hyperCube;
     
@@ -87,7 +89,7 @@ bool SplitsClusterisation::markCubeAndNeighborsAsCluster(const QVector<NSCube *>
         hyperCube.at(cubeNum)->setInCluster(clusterNum);
         // помечаем всех его соседей и соседей их соседей, как входящих в этот кластер
         for (int j = 0; j < hyperCube.size(); j++) {
-            if (hyperCube.at(cubeNum)->isNeighbors(hyperCube.at(j))) {
+            if ((cubeNum != j) && (hyperCube.at(cubeNum)->isNeighbors(hyperCube.at(j)))) {
                 // это наш сосед
                 markCubeAndNeighborsAsCluster(hyperCube, j, clusterNum);
             }

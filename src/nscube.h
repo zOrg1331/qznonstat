@@ -69,13 +69,13 @@ public:
         inCluster = inCluster_;
     }
     
-    bool isNeighbors(const NSCube *other, int limit = 1)
+    bool isNeighbors(const NSCube *other)
     {
         bool zflag = false;
         for (int i = 0; i < coords.size(); i++) {
             int dist = coords.at(i) - other->getCoords().at(i);
-            if (abs(dist) > limit) return false;
-            if ((abs(dist) > 0) && (limit == 1)) {
+            if (abs(dist) > 1) return false;
+            if (abs(dist) == 1) {
                 if (zflag) {
                     // только по одной координате допускается расстояние 1
                     // по остальным должно быть 0 (исключаются соприкасающиеся углами кубики)

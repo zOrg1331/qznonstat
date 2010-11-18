@@ -368,7 +368,7 @@
               <item row="0" column="0">
                <widget class="QLabel" name="clusterParam1Label">
                 <property name="text">
-                 <string>количество разбиений:</string>
+                 <string>количество разбиений, 2^x:</string>
                 </property>
                </widget>
               </item>

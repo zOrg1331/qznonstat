@@ -91,7 +91,7 @@ void SplitsClusterisationTune::on_drawClustersGraph_clicked()
         splitsClusterisation->start();
         splitsClusterisation->wait();
         
-        clustersVector.append(splitsClusterisation->getClusters());
+        clustersVector.append(*splitsClusterisation->getClusters());
     }
     
     updateClustersGraph();
@@ -119,10 +119,10 @@ void SplitsClusterisationTune::updateClustersGraph()
 
     for (int partI = 0; partI < clustersVector.size(); partI++) {
         
-        partsScene.addText(QString("%1").arg(partI+1))->setPos((partI+1)*(maxClusterWidth+clustersMargin),
+        partsScene.addText(QString("%1").arg(partI+fromParts))->setPos((partI+1)*(maxClusterWidth+clustersMargin),
                                                                maxClusterWidth+5);
  
-        QMap<int, QVector<DistanceElement> > *clusters = clustersVector.at(partI);
+        const QMap<int, QVector<DistanceElement> > *clusters = &clustersVector.at(partI);
 
         int i = 0;
         foreach (int cluster, clusters->keys()) {
@@ -138,9 +138,9 @@ void SplitsClusterisationTune::updateClustersGraph()
             partsScene.addItem(item);
             i++;
         }
-        
+
         if (partI >= 1) {
-            QMap<int, QVector<DistanceElement> > *clustersPrev = clustersVector.at(partI-1);
+            const QMap<int, QVector<DistanceElement> > *clustersPrev = &clustersVector.at(partI-1);
 
             int distanceElementsPrevCntMax = 0;
             foreach (int clusterPrev, clustersPrev->keys()) {

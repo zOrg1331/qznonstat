@@ -75,7 +75,7 @@ public:
     {
         QVector<int> res;
         for (int i = 0; i < coeffs.size(); i++) {
-            res << coeffs.at(i)/((fabs(max)+fabs(min))/(double)partsCnt);
+            res << coeffs.at(i)/((fabs(max)+fabs(min))/partsCnt);
         }
         return res;
     }
