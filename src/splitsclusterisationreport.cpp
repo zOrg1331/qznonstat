@@ -27,7 +27,7 @@ void SplitsClusterisationReport::on_updateRepButton_clicked()
     QStringList colorNames = QColor::colorNames();
     int k = 0;
     foreach (int cluster, clusters->keys()) {
-        clustersColors[cluster] = colorNames.at(k+10);
+        clustersColors[cluster] = colorNames.at((k+10)%colorNames.size());
         k++;
     }
     
