@@ -67,6 +67,7 @@ private slots:
     void on_dataNormalizeCheck_clicked(bool checked);
     void on_doClusterButton_clicked();
     void on_clusterSetupMethodButton_clicked();
+    void on_showClusterisationReportButton_clicked();
 };
 
 #endif // MAINWINDOW_H

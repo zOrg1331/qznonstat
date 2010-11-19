@@ -231,6 +231,7 @@ void MainWindow::enable_dataAnalysisSetupMethodButton()
 void MainWindow::enable_clusterSetupMethodButton()
 {
     ui->clusterSetupMethodButton->setEnabled(true);
+    ui->showClusterisationReportButton->setEnabled(true);
 }
 
 void MainWindow::enable_doClusterButton()
@@ -271,4 +272,9 @@ void MainWindow::on_clusterSetupMethodButton_clicked()
         splitsClusterisationTune->show();
         break;
     }
+}
+
+void MainWindow::on_showClusterisationReportButton_clicked()
+{
+    splitsClusterisationReport->show();
 }

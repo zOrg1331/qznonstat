@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>591</width>
-    <height>352</height>
+    <width>589</width>
+    <height>350</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -49,7 +49,7 @@
        </column>
        <column>
         <property name="text">
-         <string>распределение кластров</string>
+         <string>распределение кластеров</string>
         </property>
        </column>
       </widget>

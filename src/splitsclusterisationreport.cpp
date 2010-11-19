@@ -20,23 +20,54 @@ SplitsClusterisationReport::~SplitsClusterisationReport()
 
 void SplitsClusterisationReport::on_updateRepButton_clicked()
 {
-#if 0
     int tsCount = splitsClusterisation->getDataKeepers()->size();
     QMap<int, QVector<DistanceElement> > *clusters = splitsClusterisation->getClusters();
+    QMap<int, QString> clustersColors;
+
+    QStringList colorNames = QColor::colorNames();
+    int k = 0;
+    foreach (int cluster, clusters->keys()) {
+        clustersColors[cluster] = colorNames.at(k+10);
+        k++;
+    }
     
+    ui->clustersRepTableWidget->setRowCount(tsCount);
     
     for (int i = 0; i < tsCount; i++) {
-        QMap<int, double> percentageRatio;
+        QWidget *w = new QWidget;
+        QHBoxLayout *layout = new QHBoxLayout;
+        layout->setMargin(0);
+        layout->setSpacing(0);
+        w->setLayout(layout);
 
         foreach (int cluster, clusters->keys()) {
-            percentageRatio[cluster] = clusters->value(cluster).size()/
-                    (double)splitsClusterisation->getDataKeepers()->at(i)->getWindowsCount();
+            int windowsCount = splitsClusterisation->getDataKeepers()->at(i)->getWindowsCount();
+            int partsCount = 0;
+            QVector<DistanceElement> distanceElements = clusters->value(cluster);
+            
+            for (int k = 0; k < distanceElements.size(); k++) {
+                if (distanceElements.at(k).getTsNum() == i) partsCount++;
+            }
+            
+            if (partsCount > 0) {
+                int percentageRatio = 100*partsCount/windowsCount;
+
+                QWidget *tmpW = new QWidget;
+                tmpW->setStyleSheet(QString("background: %1").arg(clustersColors[cluster]));
+             
+                layout->addWidget(tmpW);
+                layout->setStretchFactor(tmpW, percentageRatio);
+            }
         }
+      
+        QString name = QFileInfo(splitsClusterisation->getDataKeepers()->at(i)->getDataFileName()).baseName();
+        QTableWidgetItem *item1 = new QTableWidgetItem(name);
+        ui->clustersRepTableWidget->setItem(i, 0, item1);
         
-        QWidget *w = new QWidget;
-        
+        ui->clustersRepTableWidget->setCellWidget(i, 1, w);
     }
-#endif
+    
+    ui->clustersRepTableWidget->resizeColumnsToContents();
     
 #if 0
     QMap<int, QVector<NSDistanceElement> > *clusters = splitsClusterisation->getClusters();
