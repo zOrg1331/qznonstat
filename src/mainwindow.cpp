@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->timeSeriesesTabs->removeTab(0);
-    
+
     ui->dataAnalysisTabs->setTabText(0, trUtf8("Расчет \"координат\" объектов кластеризации"));
     ui->dataAnalysisTabs->setTabText(1, trUtf8("Кластеризация"));
 
@@ -33,17 +33,14 @@ MainWindow::MainWindow(QWidget *parent) :
 
     arModelTune = new ArModelTune(arDataAnalysisRoutine, this);
     arModelTune->hide();
-    
+
     splitsClusterisationRoutine = new SplitsClusterisation();
     splitsClusterisationRoutine->setDataKeepers(&dataKeepers);
     splitsClusterisationRoutine->setDistanceElements(&distanceElements);
     splitsClusterisationRoutine->setClusters(&clusters);
-    
+
     splitsClusterisationTune = new SplitsClusterisationTune(splitsClusterisationRoutine, this);
     splitsClusterisationTune->hide();
-    
-    splitsClusterisationReport = new SplitsClusterisationReport(splitsClusterisationRoutine, this);
-    splitsClusterisationReport->hide();
 }
 
 MainWindow::~MainWindow()
@@ -231,7 +228,6 @@ void MainWindow::enable_dataAnalysisSetupMethodButton()
 void MainWindow::enable_clusterSetupMethodButton()
 {
     ui->clusterSetupMethodButton->setEnabled(true);
-    ui->showClusterisationReportButton->setEnabled(true);
 }
 
 void MainWindow::enable_doClusterButton()
@@ -272,9 +268,4 @@ void MainWindow::on_clusterSetupMethodButton_clicked()
         splitsClusterisationTune->show();
         break;
     }
-}
-
-void MainWindow::on_showClusterisationReportButton_clicked()
-{
-    splitsClusterisationReport->show();
 }

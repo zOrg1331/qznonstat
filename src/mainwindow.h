@@ -37,15 +37,14 @@ private:
     QList<DataKeeper *> dataKeepers;
 
     QVector<DistanceElement> distanceElements;
-    
+
     QMap<int, QVector<DistanceElement> > clusters;
 
     ArDataAnalysis *arDataAnalysisRoutine;
     ArModelTune *arModelTune;
-    
+
     SplitsClusterisation *splitsClusterisationRoutine;
     SplitsClusterisationTune *splitsClusterisationTune;
-    SplitsClusterisationReport *splitsClusterisationReport;
 
 private slots:
     void on_addDataButton_clicked();
@@ -67,7 +66,6 @@ private slots:
     void on_dataNormalizeCheck_clicked(bool checked);
     void on_doClusterButton_clicked();
     void on_clusterSetupMethodButton_clicked();
-    void on_showClusterisationReportButton_clicked();
 };
 
 #endif // MAINWINDOW_H
