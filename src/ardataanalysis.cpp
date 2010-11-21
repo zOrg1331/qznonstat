@@ -63,7 +63,9 @@ void ArDataAnalysis::calc()
             distanceElements->append(dElement);
 
             progress++;
+#ifndef Q_OS_WIN
             emit progressStep(progress);
+#endif
         }
     }
 }
