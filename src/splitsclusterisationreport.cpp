@@ -11,6 +11,9 @@ SplitsClusterisationReport::SplitsClusterisationReport(SplitsClusterisation *spl
 {
     ui->setupUi(this);
     this->setWindowFlags(Qt::Window);
+
+    connect(splitsClusterisation, SIGNAL(finished()),
+            this, SLOT(on_updateRepButton_clicked()));
 }
 
 SplitsClusterisationReport::~SplitsClusterisationReport()
@@ -30,9 +33,9 @@ void SplitsClusterisationReport::on_updateRepButton_clicked()
         clustersColors[cluster] = colorNames.at((k+10)%colorNames.size());
         k++;
     }
-    
+
     ui->clustersRepTableWidget->setRowCount(tsCount);
-    
+
     for (int i = 0; i < tsCount; i++) {
         QWidget *w = new QWidget;
         QHBoxLayout *layout = new QHBoxLayout;
@@ -44,34 +47,47 @@ void SplitsClusterisationReport::on_updateRepButton_clicked()
             int windowsCount = splitsClusterisation->getDataKeepers()->at(i)->getWindowsCount();
             int partsCount = 0;
             QVector<DistanceElement> distanceElements = clusters->value(cluster);
-            
+
             for (int k = 0; k < distanceElements.size(); k++) {
                 if (distanceElements.at(k).getTsNum() == i) partsCount++;
             }
-            
+
             if (partsCount > 0) {
                 int percentageRatio = 100*partsCount/windowsCount;
 
                 QWidget *tmpW = new QWidget;
                 tmpW->setStyleSheet(QString("background: %1").arg(clustersColors[cluster]));
-             
+
+                if (percentageRatio > 20) {
+                    QLabel *tmpLabel = new QLabel(QString("  %1").arg(percentageRatio));
+                    tmpLabel->setStyleSheet(QString("color: white"));
+                    QHBoxLayout *tmpL = new QHBoxLayout();
+                    tmpL->setMargin(0);
+                    tmpL->setSpacing(0);
+                    tmpL->addWidget(tmpLabel);
+                    //tmpL->setStretchFactor(tmpLabel, percentageRatio);
+
+                    tmpW->setLayout(tmpL);
+                }
+
                 layout->addWidget(tmpW);
                 layout->setStretchFactor(tmpW, percentageRatio);
             }
         }
-      
+
         QString name = QFileInfo(splitsClusterisation->getDataKeepers()->at(i)->getDataFileName()).baseName();
         QTableWidgetItem *item1 = new QTableWidgetItem(name);
+        item1->setToolTip(splitsClusterisation->getDataKeepers()->at(i)->getDataFileName());
         ui->clustersRepTableWidget->setItem(i, 0, item1);
-        
+
         ui->clustersRepTableWidget->setCellWidget(i, 1, w);
     }
-    
+
     ui->clustersRepTableWidget->resizeColumnsToContents();
-    
+
 #if 0
     QMap<int, QVector<NSDistanceElement> > *clusters = splitsClusterisation->getClusters();
-    
+
     int rowTs = 0;
     foreach (int cluster, clusters->keys()) {
         int tsCount = 0;
