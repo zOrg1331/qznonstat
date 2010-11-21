@@ -68,7 +68,43 @@ void ArDataAnalysis::calc()
     }
 }
 
-int ArDataAnalysis::calcOptDim(int windowNum, int maxDim, int order)
+int ArDataAnalysis::calcOptDim(int ts, int w, int maxDim, int order)
 {
-    return 0;
+    QVector<double> data;
+    double sicMin = 1e10;
+    int dMin = 0;
+
+    for (int d = 1; d < maxDim; d++) {
+        dataKeepers->at(ts)->getDataInWindow(w, &data);
+
+        VECTOR_D dataV;
+        dataV.resize(data.size());
+        for (int i = 0; i < data.size(); i++) {
+            dataV[i] = data.at(i);
+        }
+
+        VECTOR_D arCoeffs;
+
+        cmtObj->lls_solve_single_ts(d, order, dataV, &arCoeffs);
+
+        VECTOR_D residuals;
+        cmtObj->calcResiduals_single_ts(d, order, dataV, arCoeffs, &residuals);
+
+        boost::math::tools::stats<double> ts_stats;
+        for (unsigned int i = 0; i < residuals.size(); i++) {
+            ts_stats.add(residuals[i]);
+        }
+
+        double var = ts_stats.variance();
+
+        int n = dataKeepers->at(ts)->getDataWindow();
+        int coeffsCount = arCoeffs.size();
+
+        double sic = log(var) + coeffsCount*log(n)/(double)n;
+        if (sic < sicMin) {
+            sicMin = sic;
+            dMin = d;
+        }
+    }
+    return dMin;
 }

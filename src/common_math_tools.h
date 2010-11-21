@@ -80,12 +80,6 @@ public:
 //                      const int shift,
 //                      VECTOR_VD & residuals);
 
-//    int calcResiduals_ts1(const VECTOR_D & ar_coeffs,
-//                          const int dimension,
-//                          const int order,
-//                          const int base_ts,
-//                          VECTOR_D & residuals);
-
 //    void setDataWindow(const int dataFrom, const int dataTo);
 
 //    void lls_solve(const int base_ts_index,
@@ -123,6 +117,12 @@ public:
     void lls_solve_single_ts(int dimension, int order,
                              const VECTOR_D &data,
                              VECTOR_D *ar_coeffs);
+
+    void calcResiduals_single_ts(const int dimension,
+                                 const int order,
+                                 const VECTOR_D &data,
+                                 const VECTOR_D &ar_coeffs,
+                                 VECTOR_D *residuals);
 
 //    VECTOR_C fft(int p, const VECTOR_D &in);
 

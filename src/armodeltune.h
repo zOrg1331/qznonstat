@@ -30,8 +30,8 @@ private:
 
     ZChart *coeffsChart;
     ZChart *swartzChart;
-    QVector<ZSimpleSeries *> coeffsSerieses;
-    ZSimpleSeries *swartzSeries;
+    QVector<ZSimpleSeries *> coeffsSeries;
+    ZSimpleSeries * swartzSeries;
 
     QProgressDialog *progress;
 

@@ -86,7 +86,7 @@ void ArModelTune::updateGraphs(bool normalize)
     }
 
     coeffsChart->removeSeries();
-    coeffsSerieses.clear();
+    coeffsSeries.clear();
 
     for (int i = 0; i < coeffsCheckBoxes.size(); i++)
         coeffsCheckBoxes.at(i)->deleteLater();
@@ -96,7 +96,7 @@ void ArModelTune::updateGraphs(bool normalize)
     for (int i = 0; i < coeffsCount; i++) {
         ZSimpleSeries *ser = new ZSimpleSeries(QString("%1").arg(i));
         ser->setColor(QColor(colorNames.at(i+10)));
-        coeffsSerieses.append(ser);
+        coeffsSeries.append(ser);
         ser->clear();
         coeffsChart->addSeries(ser);
 
@@ -165,11 +165,13 @@ void ArModelTune::on_calcOptimumDimension_clicked()
 
     swartzSeries->clear();
 
-    progress->setMaximum(2*partsCount+1);
+    progress->setMaximum(partsCount);
     progress->setValue(0);
 
     for (int i = 0; i < partsCount; i++) {
-        int dim = arDataAnalysis->calcOptDim(i, maxDim, order);
+        int dim = arDataAnalysis->calcOptDim(arDataAnalysis->getDistanceElements()->at(i).getTsNum(),
+                                             arDataAnalysis->getDistanceElements()->at(i).getWindowNum(),
+                                             maxDim, order);
         swartzSeries->add(i, dim);
 
         progress->setValue(progress->value()+1);
