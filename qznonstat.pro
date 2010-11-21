@@ -41,3 +41,5 @@ HEADERS  += src/mainwindow.h \
     src/nsclusteritem.h
 
 FORMS    += src/mainwindow.ui src/armodeltune.ui src/splitsclusterisationtune.ui
+
+INCLUDEPATH += ../boost_includes
