@@ -7,7 +7,6 @@
 #include "armodeltune.h"
 #include "splitsclusterisation.h"
 #include "splitsclusterisationtune.h"
-#include "splitsclusterisationreport.h"
 
 #include <QFileDialog>
 #include <QProgressDialog>
