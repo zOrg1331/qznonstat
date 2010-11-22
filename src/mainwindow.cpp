@@ -3,6 +3,7 @@
 
 #include "datakeeper.h"
 #include "distanceelement.h"
+#include "cluster.h"
 #include "ardataanalysis.h"
 #include "armodeltune.h"
 #include "splitsclusterisation.h"

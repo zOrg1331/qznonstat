@@ -12,6 +12,7 @@ class QProgressDialog;
 
 class DataKeeper;
 class DistanceElement;
+class Cluster;
 class ArDataAnalysis;
 class ArModelTune;
 class SplitsClusterisation;
@@ -38,7 +39,7 @@ private:
 
     QVector<DistanceElement> distanceElements;
 
-    QMap<int, QVector<DistanceElement> > clusters;
+    QVector<Cluster *> clusters;
 
     ArDataAnalysis *arDataAnalysisRoutine;
     ArModelTune *arModelTune;

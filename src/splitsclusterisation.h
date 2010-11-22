@@ -20,8 +20,8 @@ public:
     void setDistanceElements(const QVector<DistanceElement> *dElements) { distanceElements = dElements; }
     const QVector<DistanceElement> *getDistanceElements() { return distanceElements; }
     
-    void setClusters(QMap<int, QVector<DistanceElement> > *clusters_) { clusters = clusters_; }
-    QMap<int, QVector<DistanceElement> > *getClusters() { return clusters; }
+    void setClusters(QVector<Cluster *> *clusters_) { clusters = clusters_; }
+    QVector<Cluster *> *getClusters() { return clusters; }
 
     int getEstimatedTime();
 

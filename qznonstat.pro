@@ -22,7 +22,8 @@ SOURCES += src/main.cpp\
     src/splitsclusterisation.cpp \
     src/nscube.cpp \
     src/splitsclusterisationtune.cpp \
-    src/nsclusteritem.cpp
+    src/nsclusteritem.cpp \
+    src/cluster.cpp
 
 HEADERS  += src/mainwindow.h \
             src/zchart.h \
@@ -38,7 +39,8 @@ HEADERS  += src/mainwindow.h \
     src/splitsclusterisation.h \
     src/nscube.h \
     src/splitsclusterisationtune.h \
-    src/nsclusteritem.h
+    src/nsclusteritem.h \
+    src/cluster.h
 
 FORMS    += src/mainwindow.ui src/armodeltune.ui src/splitsclusterisationtune.ui
 
