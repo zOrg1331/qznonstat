@@ -17,17 +17,23 @@ public:
     {
         init();
     }
-    
+
     Cluster(const Cluster &other)
     {
         init();
-        distanceElements = other.distanceElements;
+        setDistanceElements(other.distanceElements);
+    }
+
+    Cluster(const QVector<DistanceElement> &distanceElements)
+    {
+        init();
+        setDistanceElements(distanceElements);
     }
 
     Cluster& operator=(const Cluster &other)
     {
         init();
-        distanceElements = other.distanceElements;
+        setDistanceElements(other.distanceElements);
         return *this;
     }
 
@@ -37,73 +43,48 @@ public:
         else return false;
     }
 
-    
-    
-    int getTsNum() const { return tsNum; }
-
-    void setTsNum(int tsNum_) { tsNum = tsNum_; }
-
-    int getWindowNum() const { return windowNum; }
-
-    void setWindowNum(int windowNum_) { windowNum = windowNum_; }
-
-    const QVector<double> & getCoeffs() const
+    const QVector<const DistanceElement*> & getDistanceElements() const
     {
-        return coeffs;
+        return distanceElements;
     }
 
-    void setCoeffs(const QVector<double> &coeffs_)
+    void setDistanceElements(const QVector<DistanceElement> &distanceElements_)
     {
-        coeffs.resize(0);
-        for (int i = 0; i < coeffs_.size(); i++) {
-            coeffs << coeffs_.at(i);
+        init();
+        for (int i = 0; i < distanceElements_.size(); i++) {
+            distanceElements.append(&(distanceElements_.at(i)));
         }
     }
 
-    double getCoeffsVectorLength(void)
+    void setDistanceElements(const QVector<const DistanceElement*> &distanceElements_)
     {
-        if (coeffsVectorLength == -1) {
-            double length = 0;
-            for (int coeff = 0; coeff < coeffs.size(); coeff++) {
-                length += coeffs.at(coeff)*coeffs.at(coeff);
-            }
-            coeffsVectorLength = sqrt(length);
-            return coeffsVectorLength;
+        init();
+        for (int i = 0; i < distanceElements_.size(); i++) {
+            distanceElements.append(distanceElements_.at(i));
         }
-        return coeffsVectorLength;
     }
 
-    QVector<int> getCubeCoord(int partsCnt, double min, double max) const
+    void appendDistanceElements(const QVector<DistanceElement> &distanceElements_)
     {
-        QVector<int> res;
-        for (int i = 0; i < coeffs.size(); i++) {
-            res << coeffs.at(i)/((fabs(max)+fabs(min))/partsCnt);
+        for (int i = 0; i < distanceElements_.size(); i++) {
+            distanceElements.append(&(distanceElements_.at(i)));
         }
-        return res;
     }
 
-    double getDistance(const Cluster &other,
-                       const QVector<int> &coeffsSelection) const
+    int getElementsCount() const
     {
-        double res = 0;
-        QVector<double> coeffs1 = other.getCoeffs();
-        if (coeffsSelection.size() == coeffs.size()) {
-            for (int i = 0; i < coeffs.size(); i++) {
-                if (coeffsSelection.at(i))
-                    res += (coeffs.at(i)-coeffs1.at(i))*(coeffs.at(i)-coeffs1.at(i));
-            }
-        } else {
-            for (int i = 0; i < coeffs.size(); i++) {
-                res += (coeffs.at(i)-coeffs1.at(i))*(coeffs.at(i)-coeffs1.at(i));
-            }
-        }
-        return sqrt(res);
+        return distanceElements.size();
+    }
+
+    const DistanceElement *getDistanceElement(int num) const
+    {
+        return distanceElements.at(num);
     }
 
 private:
     void init();
 
-    QVector<DistanceElement> distanceElements;
+    QVector<const DistanceElement*> distanceElements;
 };
 
 #endif // Cluster_H

@@ -14,6 +14,11 @@ ArDataAnalysis::ArDataAnalysis(QObject *parent) :
     cmtObj = new CommonMathTools();
 }
 
+ArDataAnalysis::~ArDataAnalysis()
+{
+    delete cmtObj;
+}
+
 int ArDataAnalysis::getEstimatedTime()
 {
     int res = 0;

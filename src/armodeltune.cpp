@@ -56,6 +56,16 @@ ArModelTune::ArModelTune(ArDataAnalysis *arDataAnalysis, QWidget *parent) :
 
 ArModelTune::~ArModelTune()
 {
+    delete coeffsChart;
+    delete swartzChart;
+    for (int i = 0; i < coeffsSeries.size(); i++) {
+        delete coeffsSeries[i];
+    }
+    coeffsSeries.resize(0);
+    delete swartzSeries;
+    for (int i = 0; i < coeffsCheckBoxes.size(); i++) {
+        delete coeffsCheckBoxes[i];
+    }
     delete ui;
 }
 

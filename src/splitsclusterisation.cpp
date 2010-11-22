@@ -6,6 +6,7 @@
 #include "datakeeper.h"
 #include "distanceelement.h"
 #include "nscube.h"
+#include "cluster.h"
 
 SplitsClusterisation::SplitsClusterisation(QObject *parent) :
     QThread(parent)
@@ -29,10 +30,10 @@ void SplitsClusterisation::run()
 void SplitsClusterisation::calc()
 {
     int m = 1 << splitsCount;
-    int d = distanceElements->at(0).getCoeffs().size();
+    int d = distanceElements->at(0).getCoeffsCount();
     double max = -1e10;
     double min = 1e10;
-    
+
     for (int i = 0; i < distanceElements->size(); i++) {
         QVector<double> coeffs = distanceElements->at(i).getCoeffs();
         for (int j = 0; j < d; j++) {
@@ -44,7 +45,7 @@ void SplitsClusterisation::calc()
     min -= 0.01*min;
 
     QVector<NSCube *> hyperCube;
-    
+
     for (int i = 0; i < distanceElements->size(); i++) {
         QVector<int> cubeCoord = distanceElements->at(i).getCubeCoord(m, min, max);
         for (int j = 0; j <= hyperCube.size(); j++) {
@@ -70,11 +71,27 @@ void SplitsClusterisation::calc()
     }
 
     // заполняем карту кластеров
+    foreach (int cluster, clusters->keys()) {
+        delete clusters->take(cluster);
+    }
     clusters->clear();
+
     for (int i = 0; i < hyperCube.size(); i++) {
         int cluster = hyperCube.at(i)->isInCluster();
-        if (cluster >= 0) clusters->insert(cluster, clusters->value(cluster) + hyperCube.at(i)->getDistanceElements());
+        if (cluster >= 0) {
+            if (clusters->contains(cluster)) {
+                clusters->value(cluster)->appendDistanceElements(hyperCube.at(i)->getDistanceElements());
+            } else {
+                clusters->insert(cluster,
+                                 new Cluster(hyperCube.at(i)->getDistanceElements()));
+            }
+        }
     }
+
+    for (int i = 0; i < hyperCube.size(); i++) {
+        delete hyperCube[i];
+    }
+    hyperCube.resize(0);
 }
 
 bool SplitsClusterisation::markCubeAndNeighborsAsCluster(const QVector<NSCube *> & hyperCube,

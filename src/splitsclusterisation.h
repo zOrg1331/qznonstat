@@ -6,6 +6,7 @@
 
 class DataKeeper;
 class DistanceElement;
+class Cluster;
 class NSCube;
 
 class SplitsClusterisation : public QThread
@@ -16,12 +17,12 @@ public:
 
     void setDataKeepers(const QList<DataKeeper *> *keepers) { dataKeepers = keepers; }
     const QList<DataKeeper *> *getDataKeepers() { return dataKeepers; }
-    
+
     void setDistanceElements(const QVector<DistanceElement> *dElements) { distanceElements = dElements; }
     const QVector<DistanceElement> *getDistanceElements() { return distanceElements; }
-    
-    void setClusters(QVector<Cluster *> *clusters_) { clusters = clusters_; }
-    QVector<Cluster *> *getClusters() { return clusters; }
+
+    void setClusters(QMap<int, Cluster*> *clusters_) { clusters = clusters_; }
+    QMap<int, Cluster*> *getClusters() { return clusters; }
 
     int getEstimatedTime();
 
@@ -43,11 +44,11 @@ private:
     bool markCubeAndNeighborsAsCluster(const QVector<NSCube *> & hyperCube,
                                        int cubeNum,
                                        int clusterNum);
-    
+
     const QList<DataKeeper *> *dataKeepers;
     const QVector<DistanceElement> *distanceElements;
-    QMap<int, QVector<DistanceElement> > *clusters;
-   
+    QMap<int, Cluster*> *clusters;
+
     int splitsCount;
     int minPartsCount;
 

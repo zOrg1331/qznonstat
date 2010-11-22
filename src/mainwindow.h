@@ -39,7 +39,7 @@ private:
 
     QVector<DistanceElement> distanceElements;
 
-    QVector<Cluster *> clusters;
+    QMap<int, Cluster*> clusters;
 
     ArDataAnalysis *arDataAnalysisRoutine;
     ArModelTune *arModelTune;

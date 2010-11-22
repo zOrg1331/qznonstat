@@ -39,7 +39,7 @@ DataKeeper::DataKeeper()
     graph = new ZSimpleSeries("");
     graph->setColor(Qt::red);
     chart->addSeries(graph);
-    
+
     clusterGraph = new ZSimpleSeries("");
     clusterGraph->setColor(Qt::darkGreen);
     chart->addSeries(clusterGraph);
@@ -48,6 +48,7 @@ DataKeeper::DataKeeper()
 DataKeeper::~DataKeeper()
 {
     delete graph;
+    delete clusterGraph;
     delete chart;
 }
 
@@ -167,6 +168,6 @@ void DataKeeper::showParts(const QVector<int> &parts_)
         clusterGraph->add(dataFrom + dataWindowStep*parts.at(i)+clusterLength, max);
         clusterGraph->add(dataFrom + dataWindowStep*parts.at(i)+clusterLength, min);
     }
-    
+
     redrawData();
 }

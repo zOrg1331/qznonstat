@@ -12,6 +12,7 @@ class ArDataAnalysis : public QThread
     Q_OBJECT
 public:
     explicit ArDataAnalysis(QObject *parent = 0);
+    ~ArDataAnalysis();
 
     void setDataKeepers(const QList<DataKeeper *> *keepers) { dataKeepers = keepers; }
     void setDistanceElements(QVector<DistanceElement> *dElements) { distanceElements = dElements; }

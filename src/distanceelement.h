@@ -58,6 +58,11 @@ public:
         }
     }
 
+    int getCoeffsCount() const
+    {
+        return coeffs.size();
+    }
+
     double getCoeffsVectorLength(void)
     {
         if (coeffsVectorLength == -1) {
