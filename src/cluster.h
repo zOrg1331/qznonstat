@@ -70,6 +70,13 @@ public:
             distanceElements.append(&(distanceElements_.at(i)));
         }
     }
+    
+    void appendDistanceElements(const QVector<const DistanceElement*> &distanceElements_)
+    {
+        for (int i = 0; i < distanceElements_.size(); i++) {
+            distanceElements.append(distanceElements_.at(i));
+        }
+    }
 
     int getElementsCount() const
     {

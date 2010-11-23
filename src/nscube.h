@@ -16,15 +16,15 @@ public:
     NSCube(const NSCube &other)
     {
         init();
-        coords = other.coords;
-        distanceElements = other.distanceElements;
+        setCoords(other.coords);
+        setDistanceElements(other.distanceElements);
     }
     
     NSCube& operator=(const NSCube &other)
     {
         init();
-        coords = other.coords;
-        distanceElements = other.distanceElements;
+        setCoords(other.coords);
+        setDistanceElements(other.distanceElements);
         return *this;
     }
     
@@ -41,12 +41,20 @@ public:
         }
     }
     
-    const QVector<DistanceElement> & getDistanceElements() const
+    const QVector<const DistanceElement*> & getDistanceElements() const
     {
         return distanceElements;
     }
     
     void setDistanceElements(const QVector<DistanceElement> &distanceElements_)
+    {
+        distanceElements.resize(0);
+        for (int i = 0; i < distanceElements_.size(); i++) {
+            distanceElements << &(distanceElements_.at(i));
+        }
+    }
+    
+    void setDistanceElements(const QVector<const DistanceElement*> &distanceElements_)
     {
         distanceElements.resize(0);
         for (int i = 0; i < distanceElements_.size(); i++) {
@@ -56,7 +64,7 @@ public:
     
     void appendDistanceElement(const DistanceElement &distanceElement_)
     {
-        distanceElements.append(distanceElement_);
+        distanceElements.append(&distanceElement_);
     }
     
     int isInCluster()
@@ -92,11 +100,12 @@ private:
     void init()
     {
         inCluster = -1;
+        distanceElements.resize(0);
     }
     
     QVector<int> coords;
     
-    QVector<DistanceElement> distanceElements;
+    QVector<const DistanceElement *> distanceElements;
     
     int inCluster;
     

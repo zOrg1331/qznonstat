@@ -72,19 +72,17 @@ void SplitsClusterisation::calc()
 
     // заполняем карту кластеров
     foreach (int cluster, clusters->keys()) {
-        delete clusters->take(cluster);
+        delete clusters->value(cluster);
     }
     clusters->clear();
 
     for (int i = 0; i < hyperCube.size(); i++) {
         int cluster = hyperCube.at(i)->isInCluster();
         if (cluster >= 0) {
-            if (clusters->contains(cluster)) {
-                clusters->value(cluster)->appendDistanceElements(hyperCube.at(i)->getDistanceElements());
-            } else {
-                clusters->insert(cluster,
-                                 new Cluster(hyperCube.at(i)->getDistanceElements()));
+            if (!clusters->contains(cluster)) {
+                clusters->insert(cluster, new Cluster());
             }
+            clusters->value(cluster)->appendDistanceElements(hyperCube.at(i)->getDistanceElements());
         }
     }
 
