@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>535</width>
-    <height>581</height>
+    <width>533</width>
+    <height>579</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -40,7 +40,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>535</width>
+     <width>533</width>
      <height>24</height>
     </rect>
    </property>
@@ -373,6 +373,20 @@
             </widget>
            </item>
           </layout>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="tab">
+        <attribute name="title">
+         <string>Page</string>
+        </attribute>
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <widget class="QPushButton" name="saveReportButton">
+           <property name="text">
+            <string>Сохранить отчет...</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>

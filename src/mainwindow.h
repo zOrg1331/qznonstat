@@ -65,6 +65,7 @@ private slots:
     void enable_clusterSetupMethodButton();
     void on_dataNormalizeCheck_clicked(bool checked);
     void on_clusterSetupMethodButton_clicked();
+    void on_saveReportButton_clicked();
 };
 
 #endif // MAINWINDOW_H

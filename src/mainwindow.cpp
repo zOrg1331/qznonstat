@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->dataAnalysisTabs->setTabText(0, trUtf8("Расчет \"координат\" объектов кластеризации"));
     ui->dataAnalysisTabs->setTabText(1, trUtf8("Кластеризация"));
+    ui->dataAnalysisTabs->setTabText(2, trUtf8("Сохранение отчета"));
 
     progress = new QProgressDialog(trUtf8("Идет расчет..."), "Отмена", 0, 1, this);
     progress->setWindowModality(Qt::ApplicationModal);
@@ -246,4 +247,35 @@ void MainWindow::on_clusterSetupMethodButton_clicked()
         splitsClusterisationTune->show();
         break;
     }
+}
+
+void MainWindow::on_saveReportButton_clicked()
+{
+    QString fileName = QFileDialog::getSaveFileName(this, trUtf8("Сохранить отчет"),
+                                                    "", trUtf8("Текстовые файлы (*.txt)"));
+    QFile file(fileName);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+        return;
+    QTextStream out(&file);
+
+    out << trUtf8("Отчет по сравнению временных рядов с помощью кластеризации (методом последовательных разбиений).\n");
+    out << "\n";
+    out << trUtf8("сравниваемые временные ряды:\n");
+    for (int i = 0; i < splitsClusterisationRoutine->getDataKeepers()->size(); i++) {
+        out << trUtf8("ряд%1: ").arg(i) << splitsClusterisationRoutine->getDataKeepers()->at(i)->getDataFileName() << "\n";
+    }
+    out << trUtf8("параметры:\n");
+    out << trUtf8("данные:\n");
+    for (int i = 0; i < splitsClusterisationRoutine->getDataKeepers()->size(); i++) {
+        out << trUtf8("        ряд%1 от: ").arg(i) << splitsClusterisationRoutine->getDataKeepers()->at(i)->getDataFrom()
+            << trUtf8(" до: ") << splitsClusterisationRoutine->getDataKeepers()->at(i)->getDataTo() << "\n";
+        out << trUtf8("        окно: ") << splitsClusterisationRoutine->getDataKeepers()->at(i)->getDataWindow() << "\n";
+        out << trUtf8("        смещение: ") << splitsClusterisationRoutine->getDataKeepers()->at(i)->getDataWindowStep() << "\n";
+    }
+    out << trUtf8("метод размерность: ") << arDataAnalysisRoutine->getDimension() << "\n";
+    out << trUtf8("      порядок: ") << arDataAnalysisRoutine->getOrder() << "\n";
+    out << trUtf8("кластеризация, разделение на кластеры: \n");
+    out << splitsClusterisationRoutine->getClustersReport();
+    
+    file.close();
 }

@@ -3,6 +3,9 @@
 #include <boost/math/tools/stats.hpp>
 #include <math.h>
 
+#include <QString>
+#include <QFileInfo>
+
 #include "datakeeper.h"
 #include "distanceelement.h"
 #include "nscube.h"
@@ -115,4 +118,34 @@ bool SplitsClusterisation::markCubeAndNeighborsAsCluster(const QVector<NSCube *>
         return true;
     }
     return false;
+}
+
+QString SplitsClusterisation::getClustersReport()
+{
+    QString res = QString("");
+    QList<Cluster *> clustersList;
+    
+    foreach (int cluster, clusters->keys()) {
+        clustersList.append(clusters->value(cluster));
+    }
+    qSort(clustersList.begin(), clustersList.end(), Cluster::compare);
+    
+    res.append(trUtf8(" № "));
+    for (int i = 0; i < dataKeepers->size(); i++) {
+        res.append(trUtf8("\t"));
+        res.append(QFileInfo(dataKeepers->at(i)->getDataFileName()).baseName());
+    }
+    res.append(trUtf8("\n"));
+    for (int c = clustersList.size()-1; c >= 0; c--) {
+        res.append(trUtf8("%1").arg(clustersList.at(c)->getNum()));
+        
+        QVector<int> partsDistribution = clustersList.at(c)->getPartsDistribution();
+        for (int i = 0; i < partsDistribution.size(); i++) {
+            res.append(trUtf8("\t%1").arg(partsDistribution.at(i)));
+        }
+        
+        res.append("\n");
+    }
+    
+    return res;
 }

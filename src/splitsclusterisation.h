@@ -4,6 +4,8 @@
 #include <QThread>
 #include <QMap>
 
+class QString;
+
 class DataKeeper;
 class DistanceElement;
 class Cluster;
@@ -30,6 +32,8 @@ public:
 
     int getSplits() { return splitsCount; }
     int getMinParts() { return minPartsCount; }
+    
+    QString getClustersReport();
 
 protected:
     void run();
