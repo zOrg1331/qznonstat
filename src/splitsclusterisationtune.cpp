@@ -52,18 +52,23 @@ void SplitsClusterisationTune::updateClustersTable()
     ui->clustersTable->setRowCount(clusters->size());
     ui->clustersTable->setColumnCount(tsCount + 2);
 
-    QVector<int> partsDistribution;
-
+    QList<Cluster *> clustersList;
     foreach (int cluster, clusters->keys()) {
-        QTableWidgetItem *newItem0 = new QTableWidgetItem(QString("%1").arg(cluster));
+        clustersList.append(clusters->value(cluster));
+    }
+    qSort(clustersList.begin(), clustersList.end(), Cluster::compare);
+
+    for (int c = clustersList.size()-1; c >= 0; c--) {
+        int clusterNum = clustersList.at(c)->getNum();
+        QTableWidgetItem *newItem0 = new QTableWidgetItem(QString("%1").arg(clusterNum));
         ui->clustersTable->setItem(row, 0, newItem0);
 
-        int elementsCount = clusters->value(cluster)->getElementsCount();
+        int elementsCount = clusters->value(clusterNum)->getElementsCount();
 
         QTableWidgetItem *newItem1 = new QTableWidgetItem(QString("%1").arg(elementsCount));
         ui->clustersTable->setItem(row, 1, newItem1);
 
-        partsDistribution = clusters->value(cluster)->getPartsDistribution();
+        QVector<int> partsDistribution = clusters->value(clusterNum)->getPartsDistribution();
 
         for (int i = 0; i < tsCount; i++) {
             int perc = 100*partsDistribution.at(i)

@@ -4,6 +4,8 @@
 #include <QVector>
 #include <QMap>
 
+#include <QtDebug>
+
 #include "distanceelement.h"
 
 class Cluster
@@ -42,6 +44,35 @@ public:
     {
         if (distanceElements == other.distanceElements) return true;
         else return false;
+    }
+    
+    static bool compare(const Cluster *c1, const Cluster *c2)
+    {
+        QVector<int> partsD1 = c1->getPartsDistribution();
+        QVector<int> partsD2 = c2->getPartsDistribution();
+        if (partsD1.size() != partsD2.size()) return false;
+        int k = 0;
+        for (int i = 0; i < partsD1.size(); i++) {
+            if (partsD1.at(i) > partsD2.at(i)) k++;
+            else k--;
+        }
+        if (k >= 0) return false;
+        return true;
+    }
+    
+    void setNum(int num_)
+    {
+        num = num_;
+    }
+    
+    int getNum() const
+    {
+        return num;
+    }
+    
+    void setTsCount(int tsCount_)
+    {
+        tsCount = tsCount_;
     }
 
     const QVector<const DistanceElement*> & getDistanceElements() const
@@ -91,15 +122,11 @@ public:
     
     QVector<int> getPartsDistribution() const
     {
-        QMap<int, int> m;
-        for (int i = 0; i < distanceElements.size(); i++) {
-            m[distanceElements.at(i)->getTsNum()]++;
-        }
         QVector<int> res;
-        res.resize(m.size());
+        res.resize(tsCount);
         res.fill(0);
-        foreach (int ts, m.keys()) {
-            res[ts] = m.value(ts);
+        for (int i = 0; i < distanceElements.size(); i++) {
+            res[distanceElements.at(i)->getTsNum()]++;
         }
         return res;
     }
@@ -108,6 +135,9 @@ private:
     void init();
 
     QVector<const DistanceElement*> distanceElements;
+    
+    int num;
+    int tsCount;
 };
 
 #endif // Cluster_H

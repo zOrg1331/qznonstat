@@ -80,7 +80,10 @@ void SplitsClusterisation::calc()
         int cluster = hyperCube.at(i)->isInCluster();
         if (cluster >= 0) {
             if (!clusters->contains(cluster)) {
-                clusters->insert(cluster, new Cluster());
+                Cluster *c = new Cluster();
+                c->setNum(cluster);
+                c->setTsCount(dataKeepers->size());
+                clusters->insert(cluster, c);
             }
             clusters->value(cluster)->appendDistanceElements(hyperCube.at(i)->getDistanceElements());
         }
