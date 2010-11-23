@@ -2,6 +2,7 @@
 #define CLUSTER_H
 
 #include <QVector>
+#include <QMap>
 
 #include "distanceelement.h"
 
@@ -86,6 +87,21 @@ public:
     const DistanceElement *getDistanceElement(int num) const
     {
         return distanceElements.at(num);
+    }
+    
+    QVector<int> getPartsDistribution() const
+    {
+        QMap<int, int> m;
+        for (int i = 0; i < distanceElements.size(); i++) {
+            m[distanceElements.at(i)->getTsNum()]++;
+        }
+        QVector<int> res;
+        res.resize(m.size());
+        res.fill(0);
+        foreach (int ts, m.keys()) {
+            res[ts] = m.value(ts);
+        }
+        return res;
     }
 
 private:

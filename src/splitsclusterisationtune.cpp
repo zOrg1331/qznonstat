@@ -52,29 +52,25 @@ void SplitsClusterisationTune::updateClustersTable()
     ui->clustersTable->setRowCount(clusters->size());
     ui->clustersTable->setColumnCount(tsCount + 2);
 
-    QVector<int> partsCount;
-    partsCount.resize(tsCount);
+    QVector<int> partsDistribution;
 
     foreach (int cluster, clusters->keys()) {
         QTableWidgetItem *newItem0 = new QTableWidgetItem(QString("%1").arg(cluster));
         ui->clustersTable->setItem(row, 0, newItem0);
 
-        QVector<const DistanceElement*> distanceElements = clusters->value(cluster)->getDistanceElements();
+        int elementsCount = clusters->value(cluster)->getElementsCount();
 
-        QTableWidgetItem *newItem1 = new QTableWidgetItem(QString("%1").arg(distanceElements.size()));
+        QTableWidgetItem *newItem1 = new QTableWidgetItem(QString("%1").arg(elementsCount));
         ui->clustersTable->setItem(row, 1, newItem1);
 
-        partsCount.fill(0);
-        for (int i = 0; i < distanceElements.size(); i++) {
-            partsCount[distanceElements.at(i)->getTsNum()]++;
-        }
+        partsDistribution = clusters->value(cluster)->getPartsDistribution();
 
         for (int i = 0; i < tsCount; i++) {
-            int perc = 100*partsCount.at(i)
+            int perc = 100*partsDistribution.at(i)
                     /splitsClusterisation->getDataKeepers()->at(i)->getWindowsCount();
 
-            QTableWidgetItem *newItem = new QTableWidgetItem(QString("%1 %2\%")
-                                                             .arg(partsCount.at(i))
+            QTableWidgetItem *newItem = new QTableWidgetItem(QString("%1 (%2\%)")
+                                                             .arg(partsDistribution.at(i))
                                                              .arg(perc));
             ui->clustersTable->setItem(row, 2+i, newItem);
             QString name = QFileInfo(splitsClusterisation->getDataKeepers()->at(i)->getDataFileName()).baseName();
@@ -128,21 +124,22 @@ void SplitsClusterisationTune::updateClustersGraph()
     for (int partI = 0; partI < clustersVector.size(); partI++) {
 
         partsScene.addText(QString("%1").arg(partI+fromParts))->setPos((partI+1)*(maxClusterWidth+clustersMargin),
-                                                               maxClusterWidth+5);
+                                                                       maxClusterWidth+5);
 
         const QMap<int, Cluster*> *clusters = &clustersVector.at(partI);
 
         int i = 0;
         foreach (int cluster, clusters->keys()) {
+            int elementsCount = clusters->value(cluster)->getElementsCount();
             if (((ui->fivePercentLinesLimitBox->isChecked()) &&
-                 ((double)clusters->value(cluster)->getDistanceElements().size()/(double)maxClusterElements > 0.05)) ||
+                 ((double)elementsCount/(double)maxClusterElements > 0.05)) ||
                     (!ui->fivePercentLinesLimitBox->isChecked()))
             {
                 NSClusterItem *item = new NSClusterItem;
                 item->setRect((partI+1)*(maxClusterWidth+clustersMargin),
                               -i*(maxClusterWidth+clustersMargin),
-                              maxClusterWidth*(clusters->value(cluster)->getDistanceElements().size()/(double)maxClusterElements),
-                              maxClusterWidth*(clusters->value(cluster)->getDistanceElements().size()/(double)maxClusterElements));
+                              maxClusterWidth*(elementsCount/(double)maxClusterElements),
+                              maxClusterWidth*(elementsCount/(double)maxClusterElements));
                 item->setPen(QPen(Qt::black));
                 item->setBrush(QBrush(Qt::darkRed));
                 item->partsCnt = partI;
@@ -157,8 +154,9 @@ void SplitsClusterisationTune::updateClustersGraph()
 
             int distanceElementsPrevCntMax = 0;
             foreach (int clusterPrev, clustersPrev->keys()) {
-                if (clustersPrev->value(clusterPrev)->getDistanceElements().size() > distanceElementsPrevCntMax)
-                    distanceElementsPrevCntMax = clustersPrev->value(clusterPrev)->getDistanceElements().size();
+                int elementsCount = clustersPrev->value(clusterPrev)->getElementsCount();
+                if (elementsCount > distanceElementsPrevCntMax)
+                    distanceElementsPrevCntMax = elementsCount;
             }
 
             foreach (int clusterPrev, clustersPrev->keys()) {
@@ -166,13 +164,13 @@ void SplitsClusterisationTune::updateClustersGraph()
                 QMap<int, int> linesCount;
 
                 // пробегаемся по всем элементам текущего кластера
-                int distanceElementsPrevCnt = clustersPrev->value(clusterPrev)->getDistanceElements().size();
+                int distanceElementsPrevCnt = clustersPrev->value(clusterPrev)->getElementsCount();
                 for (int distElementPrev = 0; distElementPrev < distanceElementsPrevCnt; distElementPrev++) {
-                    const DistanceElement *distElementTmp = clustersPrev->value(clusterPrev)->getDistanceElements().at(distElementPrev);
+                    const DistanceElement *distElementTmp = clustersPrev->value(clusterPrev)->getDistanceElement(distElementPrev);
 
                     // ищем этот элемент в кластерах clustersI
                     foreach (int cluster, clusters->keys()) {
-                        int distanceElementsCnt = clusters->value(cluster)->getDistanceElements().size();
+                        int distanceElementsCnt = clusters->value(cluster)->getElementsCount();
                         bool isFinished = false;
                         for (int distElementI = 0; distElementI < distanceElementsCnt; distElementI++) {
                             if (distElementTmp == clusters->value(cluster)->getDistanceElement(distElementI)) {
@@ -270,12 +268,8 @@ void SplitsClusterisationTune::updateClustersDistributionTable()
 
         foreach (int cluster, clusters->keys()) {
             int windowsCount = splitsClusterisation->getDataKeepers()->at(i)->getWindowsCount();
-            int partsCount = 0;
-            QVector<const DistanceElement*> distanceElements = clusters->value(cluster)->getDistanceElements();
-
-            for (int k = 0; k < distanceElements.size(); k++) {
-                if (distanceElements.at(k)->getTsNum() == i) partsCount++;
-            }
+            QVector<int> partsDistribution = clusters->value(cluster)->getPartsDistribution();
+            int partsCount = partsDistribution.at(i);
 
             if (partsCount > 0) {
                 int percentageRatio = 100*partsCount/windowsCount;
