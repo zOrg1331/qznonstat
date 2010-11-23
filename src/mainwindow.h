@@ -62,10 +62,8 @@ private slots:
     void on_doDataAnalysisButton_clicked();
     void on_dataAnalysisSetupMethodButton_clicked();
     void enable_dataAnalysisSetupMethodButton();
-    void enable_doClusterButton();
     void enable_clusterSetupMethodButton();
     void on_dataNormalizeCheck_clicked(bool checked);
-    void on_doClusterButton_clicked();
     void on_clusterSetupMethodButton_clicked();
 };
 

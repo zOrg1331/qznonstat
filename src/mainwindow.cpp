@@ -212,7 +212,7 @@ void MainWindow::on_doDataAnalysisButton_clicked()
         connect(arDataAnalysisRoutine, SIGNAL(finished()),
                 this, SLOT(enable_dataAnalysisSetupMethodButton()));
         connect(arDataAnalysisRoutine, SIGNAL(finished()),
-                this, SLOT(enable_doClusterButton()));
+                this, SLOT(enable_clusterSetupMethodButton()));
         arDataAnalysisRoutine->setParams(ui->dataAnalysisParam1Edit->text().toInt(),
                                          ui->dataAnalysisParam2Edit->text().toInt());
         arDataAnalysisRoutine->start();
@@ -230,33 +230,11 @@ void MainWindow::enable_clusterSetupMethodButton()
     ui->clusterSetupMethodButton->setEnabled(true);
 }
 
-void MainWindow::enable_doClusterButton()
-{
-    ui->doClusterButton->setEnabled(true);
-}
-
 void MainWindow::on_dataAnalysisSetupMethodButton_clicked()
 {
     switch (ui->dataAnalysisMethodBox->currentIndex()) {
     case 0:
         arModelTune->show();
-        break;
-    }
-}
-
-void MainWindow::on_doClusterButton_clicked()
-{
-    switch (ui->clusterMethodBox->currentIndex()) {
-    case 0:
-        progress->setMaximum(splitsClusterisationRoutine->getEstimatedTime());
-        disconnect(progress);
-        connect(splitsClusterisationRoutine, SIGNAL(progressStep(int)),
-                progress, SLOT(setValue(int)));
-        connect(splitsClusterisationRoutine, SIGNAL(finished()),
-                this, SLOT(enable_clusterSetupMethodButton()));
-        splitsClusterisationRoutine->setParams(ui->clusterParam1Edit->text().toInt(),
-                                               ui->clusterParam2Edit->text().toInt());
-        splitsClusterisationRoutine->start();
         break;
     }
 }
