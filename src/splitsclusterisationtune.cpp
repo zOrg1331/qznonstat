@@ -100,7 +100,13 @@ void SplitsClusterisationTune::on_drawClustersGraph_clicked()
         splitsClusterisation->start();
         splitsClusterisation->wait();
 
-        clustersVector.append(*splitsClusterisation->getClusters());
+        QMap<int, Cluster*> *tmpClusterP = splitsClusterisation->getClusters();
+        QMap<int, Cluster> tmpCluster;
+        foreach (int cluster, tmpClusterP->keys()) {
+            tmpCluster[cluster] = *tmpClusterP->value(cluster);
+        }
+
+        clustersVector.append(tmpCluster);
     }
 
     updateClustersGraph();
@@ -131,11 +137,11 @@ void SplitsClusterisationTune::updateClustersGraph()
         partsScene.addText(QString("%1").arg(partI+fromParts))->setPos((partI+1)*(maxClusterWidth+clustersMargin),
                                                                        maxClusterWidth+5);
 
-        const QMap<int, Cluster*> *clusters = &clustersVector.at(partI);
+        const QMap<int, Cluster> *clusters = &clustersVector.at(partI);
 
         int i = 0;
         foreach (int cluster, clusters->keys()) {
-            int elementsCount = clusters->value(cluster)->getElementsCount();
+            int elementsCount = clusters->value(cluster).getElementsCount();
             if (((ui->fivePercentLinesLimitBox->isChecked()) &&
                  ((double)elementsCount/(double)maxClusterElements > 0.05)) ||
                     (!ui->fivePercentLinesLimitBox->isChecked()))
@@ -155,11 +161,11 @@ void SplitsClusterisationTune::updateClustersGraph()
         }
 
         if (partI >= 1) {
-            const QMap<int, Cluster*> *clustersPrev = &clustersVector.at(partI-1);
+            const QMap<int, Cluster> *clustersPrev = &clustersVector.at(partI-1);
 
             int distanceElementsPrevCntMax = 0;
             foreach (int clusterPrev, clustersPrev->keys()) {
-                int elementsCount = clustersPrev->value(clusterPrev)->getElementsCount();
+                int elementsCount = clustersPrev->value(clusterPrev).getElementsCount();
                 if (elementsCount > distanceElementsPrevCntMax)
                     distanceElementsPrevCntMax = elementsCount;
             }
@@ -169,16 +175,16 @@ void SplitsClusterisationTune::updateClustersGraph()
                 QMap<int, int> linesCount;
 
                 // пробегаемся по всем элементам текущего кластера
-                int distanceElementsPrevCnt = clustersPrev->value(clusterPrev)->getElementsCount();
+                int distanceElementsPrevCnt = clustersPrev->value(clusterPrev).getElementsCount();
                 for (int distElementPrev = 0; distElementPrev < distanceElementsPrevCnt; distElementPrev++) {
-                    const DistanceElement *distElementTmp = clustersPrev->value(clusterPrev)->getDistanceElement(distElementPrev);
+                    const DistanceElement *distElementTmp = clustersPrev->value(clusterPrev).getDistanceElement(distElementPrev);
 
                     // ищем этот элемент в кластерах clustersI
                     foreach (int cluster, clusters->keys()) {
-                        int distanceElementsCnt = clusters->value(cluster)->getElementsCount();
+                        int distanceElementsCnt = clusters->value(cluster).getElementsCount();
                         bool isFinished = false;
                         for (int distElementI = 0; distElementI < distanceElementsCnt; distElementI++) {
-                            if (distElementTmp == clusters->value(cluster)->getDistanceElement(distElementI)) {
+                            if (distElementTmp == clusters->value(cluster).getDistanceElement(distElementI)) {
                                 // элемент distElementTmp из кластера clustersIOldIter.key() найден
                                 // в кластере clustersIIter.key()
                                 // соединяем эти кластера линией и прерываем процесс

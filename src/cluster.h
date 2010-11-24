@@ -24,6 +24,8 @@ public:
     Cluster(const Cluster &other)
     {
         init();
+        num = other.num;
+        tsCount = other.tsCount;
         setDistanceElements(other.distanceElements);
     }
 
@@ -36,6 +38,8 @@ public:
     Cluster& operator=(const Cluster &other)
     {
         init();
+        num = other.num;
+        tsCount = other.tsCount;
         setDistanceElements(other.distanceElements);
         return *this;
     }
