@@ -23,7 +23,8 @@ SOURCES += src/main.cpp\
     src/nscube.cpp \
     src/splitsclusterisationtune.cpp \
     src/nsclusteritem.cpp \
-    src/cluster.cpp
+    src/cluster.cpp \
+    src/clusterinfo.cpp
 
 HEADERS  += src/mainwindow.h \
             src/zchart.h \
@@ -40,8 +41,10 @@ HEADERS  += src/mainwindow.h \
     src/nscube.h \
     src/splitsclusterisationtune.h \
     src/nsclusteritem.h \
-    src/cluster.h
+    src/cluster.h \
+    src/clusterinfo.h
 
-FORMS    += src/mainwindow.ui src/armodeltune.ui src/splitsclusterisationtune.ui
+FORMS    += src/mainwindow.ui src/armodeltune.ui src/splitsclusterisationtune.ui \
+    src/clusterinfo.ui
 
 INCLUDEPATH += ../boost_includes

@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>533</width>
-    <height>579</height>
+    <width>529</width>
+    <height>599</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Кластеризация временных рядов</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
@@ -40,7 +40,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>533</width>
+     <width>529</width>
      <height>24</height>
     </rect>
    </property>
@@ -149,7 +149,7 @@
         <item row="6" column="1">
          <widget class="QLineEdit" name="dataWindowEdit">
           <property name="text">
-           <string>500</string>
+           <string>100</string>
           </property>
          </widget>
         </item>
@@ -163,7 +163,7 @@
         <item row="7" column="1">
          <widget class="QLineEdit" name="dataStepEdit">
           <property name="text">
-           <string>500</string>
+           <string>50</string>
           </property>
          </widget>
         </item>
@@ -271,14 +271,14 @@
             <item row="0" column="1">
              <widget class="QLineEdit" name="dataAnalysisParam1Edit">
               <property name="text">
-               <string>6</string>
+               <string>1</string>
               </property>
              </widget>
             </item>
             <item row="1" column="1">
              <widget class="QLineEdit" name="dataAnalysisParam2Edit">
               <property name="text">
-               <string>1</string>
+               <string>6</string>
               </property>
              </widget>
             </item>

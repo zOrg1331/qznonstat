@@ -235,17 +235,17 @@ double ZChartSeries::getMinYy( double /*xl*/,double /*xr*/ ) {
 
 ZSimpleSeries::ZSimpleSeries( const QString &aName )
      : ZChartSeries( aName ) {
-     point.resize( 100 );
-     LongDoublePoint p = {0, 0};
-     point.fill( p );
+//     point.resize( 100 );
+//     LongDoublePoint p = {0, 0};
+//     point.fill( p );
 }
 
 ZSimpleSeries::ZSimpleSeries( const QString &aName, const QColor &aColor )
      : ZChartSeries( aName, aColor ) {
-     point.resize( 1 );
-     LongDoublePoint p = {0, 0};
-     point.fill( p );
-     color = aColor;
+//     point.resize( 1 );
+//     LongDoublePoint p = {0, 0};
+//     point.fill( p );
+//     color = aColor;
 }
 
 void ZSimpleSeries::draw( void ) {

@@ -16,6 +16,7 @@ class SplitsClusterisation : public QThread
     Q_OBJECT
 public:
     explicit SplitsClusterisation(QObject *parent = 0);
+    ~SplitsClusterisation();
 
     void setDataKeepers(const QList<DataKeeper *> *keepers) { dataKeepers = keepers; }
     const QList<DataKeeper *> *getDataKeepers() { return dataKeepers; }

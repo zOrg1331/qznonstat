@@ -11,8 +11,8 @@ DataKeeper::DataKeeper()
 {
     dataFrom = 0;
     dataTo = 10000;
-    dataWindow = 500;
-    dataWindowStep = 500;
+    dataWindow = 100;
+    dataWindowStep = 50;
     dataUseFullTs = true;
     dataUseSeconds = false;
     dataSampling = 250;

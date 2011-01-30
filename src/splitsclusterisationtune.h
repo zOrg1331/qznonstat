@@ -5,6 +5,8 @@
 
 #include "splitsclusterisation.h"
 
+class ClusterInfo;
+
 namespace Ui {
     class SplitsClusterisationTune;
 }
@@ -28,6 +30,8 @@ private:
     QGraphicsScene partsScene;
 
     QVector<QMap<int, Cluster> > clustersVector;
+    
+    ClusterInfo *clusterInfo;
 
 private slots:
     void updateClustersTable();
@@ -36,6 +40,7 @@ private slots:
     void on_calcClustersButton_clicked();
     void on_drawClustersGraph_clicked();
     void on_clustersTable_cellClicked(int row, int column);
+    void showTsOfCurrentCluster();
     
 signals:
     void progressStep(int);

@@ -16,6 +16,14 @@ SplitsClusterisation::SplitsClusterisation(QObject *parent) :
 {
 }
 
+SplitsClusterisation::~SplitsClusterisation()
+{
+    foreach (int cluster, clusters->keys()) {
+        delete clusters->value(cluster);
+    }
+    clusters->clear();
+}
+
 int SplitsClusterisation::getEstimatedTime()
 {
     int res = 0;
@@ -133,7 +141,7 @@ QString SplitsClusterisation::getClustersReport()
     res.append(trUtf8(" № "));
     for (int i = 0; i < dataKeepers->size(); i++) {
         res.append(trUtf8("\t"));
-        res.append(QFileInfo(dataKeepers->at(i)->getDataFileName()).baseName());
+        res.append(dataKeepers->at(i)->getDataFileNameShort());
     }
     res.append(trUtf8("\n"));
     for (int c = clustersList.size()-1; c >= 0; c--) {

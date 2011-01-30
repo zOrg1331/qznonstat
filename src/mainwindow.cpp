@@ -46,6 +46,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    disconnect(this);
+    while (!dataKeepers.isEmpty())
+        delete dataKeepers.takeFirst();
+    delete splitsClusterisationRoutine;
+    delete arDataAnalysisRoutine;
     delete ui;
 }
 
@@ -64,7 +69,7 @@ void MainWindow::fillDataSettingsWidgets(DataKeeper *dataKeeper)
         if (dataKeeper->getDataNormalize()) ui->dataNormalizeCheck->setChecked(true);
         else ui->dataNormalizeCheck->setChecked(false);
         ui->fileNameLabel->setText(trUtf8("Файл: %1")
-                                   .arg(QFileInfo(dataKeeper->getDataFileName()).baseName()));
+                                   .arg(dataKeeper->getDataFileNameShort()));
     }
 }
 

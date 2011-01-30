@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QString>
+#include <QFileInfo>
 
 class ZChart;
 class ZSimpleSeries;
@@ -18,6 +19,7 @@ public:
 
     void setDataFileName(const QString fileName);
     QString getDataFileName() { return fileName; }
+    QString getDataFileNameShort() { return QFileInfo(getDataFileName()).baseName(); }
 
     void setDataFrom(const int from) { dataFrom = from; }
     void setDataTo(const int to) { dataTo = to; }

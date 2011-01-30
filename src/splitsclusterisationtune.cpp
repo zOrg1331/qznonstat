@@ -5,6 +5,7 @@
 #include "datakeeper.h"
 #include "nsclusteritem.h"
 #include "cluster.h"
+#include "clusterinfo.h"
 
 SplitsClusterisationTune::SplitsClusterisationTune(SplitsClusterisation *splitsClusterisation, QWidget *parent) :
     QWidget(parent),
@@ -26,11 +27,15 @@ SplitsClusterisationTune::SplitsClusterisationTune(SplitsClusterisation *splitsC
             this, SLOT(updateClustersTable()));
     connect(splitsClusterisation, SIGNAL(finished()),
             this, SLOT(updateClustersDistributionTable()));
+    
+    clusterInfo = new ClusterInfo(this);
+    clusterInfo->hide();
 }
 
 SplitsClusterisationTune::~SplitsClusterisationTune()
 {
     delete ui;
+    delete progress;
 }
 
 void SplitsClusterisationTune::on_calcClustersButton_clicked()
@@ -50,7 +55,7 @@ void SplitsClusterisationTune::updateClustersTable()
     tsCount = splitsClusterisation->getDataKeepers()->size();
 
     ui->clustersTable->setRowCount(clusters->size());
-    ui->clustersTable->setColumnCount(tsCount + 2);
+    ui->clustersTable->setColumnCount(tsCount + 3);
 
     QList<Cluster *> clustersList;
     foreach (int cluster, clusters->keys()) {
@@ -78,9 +83,15 @@ void SplitsClusterisationTune::updateClustersTable()
                                                              .arg(partsDistribution.at(i))
                                                              .arg(perc));
             ui->clustersTable->setItem(row, 2+i, newItem);
-            QString name = QFileInfo(splitsClusterisation->getDataKeepers()->at(i)->getDataFileName()).baseName();
+            QString name = splitsClusterisation->getDataKeepers()->at(i)->getDataFileNameShort();
             ui->clustersTable->setHorizontalHeaderItem(2+i, new QTableWidgetItem(name));
         }
+        
+        ui->clustersTable->setHorizontalHeaderItem(2+tsCount, new QTableWidgetItem(""));
+        QPushButton *showTsButton = new QPushButton(trUtf8("просмотреть..."));
+        showTsButton->setProperty("cluster", QVariant(clusterNum));
+        connect(showTsButton, SIGNAL(clicked()), this, SLOT(showTsOfCurrentCluster()));
+        ui->clustersTable->setCellWidget(row, 2+tsCount, showTsButton);
 
         row++;
     }
@@ -305,7 +316,7 @@ void SplitsClusterisationTune::updateClustersDistributionTable()
             }
         }
 
-        QString name = QFileInfo(splitsClusterisation->getDataKeepers()->at(i)->getDataFileName()).baseName();
+        QString name = splitsClusterisation->getDataKeepers()->at(i)->getDataFileNameShort();
         QTableWidgetItem *item1 = new QTableWidgetItem(name);
         item1->setToolTip(splitsClusterisation->getDataKeepers()->at(i)->getDataFileName());
         ui->clusterDistributionTable->setItem(i, 0, item1);
@@ -314,4 +325,12 @@ void SplitsClusterisationTune::updateClustersDistributionTable()
     }
 
     ui->clusterDistributionTable->resizeColumnsToContents();
+}
+
+void SplitsClusterisationTune::showTsOfCurrentCluster()
+{
+    int clusterNum = sender()->property("cluster").toInt();
+
+    clusterInfo->show();
+    clusterInfo->showClusterInfo(splitsClusterisation->getDataKeepers(), splitsClusterisation->getClusters(), clusterNum);
 }
